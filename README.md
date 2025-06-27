@@ -97,9 +97,12 @@ The application is fully responsive and works on:
 ## 📊 Mock Data
 
 The application includes realistic mock data for:
-- 4 different voice challenges (Sales, Support, Tech, Teacher)
-- 6 sample candidates with complete scoring
-- Challenge history and performance metrics
+- **20 voice challenges** across multiple domains:
+  - **Non-Technical Roles**: Sales, Support, Tech Support, Teaching
+  - **Software Development**: JavaScript, Python, Java, C++, C#, PHP, Ruby, Go, Swift, Kotlin, Rust, TypeScript
+  - **Engineering Roles**: Full Stack, DevOps, Mobile Development, Data Engineering
+- **14 sample candidates** with complete scoring across different technical roles
+- Challenge history and performance metrics for software developers
 
 ## 🔮 Future Enhancements
 

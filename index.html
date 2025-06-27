@@ -114,10 +114,32 @@
                             <label for="role">Role Interest</label>
                             <select id="role" name="role" required>
                                 <option value="">Select a role</option>
-                                <option value="sales">Sales Representative</option>
-                                <option value="support">Customer Support</option>
-                                <option value="tech">Tech Support</option>
-                                <option value="teacher">Teacher</option>
+                                <optgroup label="Non-Technical Roles">
+                                    <option value="sales">Sales Representative</option>
+                                    <option value="support">Customer Support</option>
+                                    <option value="tech">Tech Support</option>
+                                    <option value="teacher">Teacher</option>
+                                </optgroup>
+                                <optgroup label="Software Development">
+                                    <option value="javascript">JavaScript Developer</option>
+                                    <option value="python">Python Developer</option>
+                                    <option value="java">Java Developer</option>
+                                    <option value="cpp">C++ Developer</option>
+                                    <option value="csharp">C# Developer</option>
+                                    <option value="php">PHP Developer</option>
+                                    <option value="ruby">Ruby Developer</option>
+                                    <option value="go">Go Developer</option>
+                                    <option value="swift">Swift Developer</option>
+                                    <option value="kotlin">Kotlin Developer</option>
+                                    <option value="rust">Rust Developer</option>
+                                    <option value="typescript">TypeScript Developer</option>
+                                </optgroup>
+                                <optgroup label="Engineering Roles">
+                                    <option value="fullstack">Full Stack Developer</option>
+                                    <option value="devops">DevOps Engineer</option>
+                                    <option value="mobile">Mobile Developer</option>
+                                    <option value="data">Data Engineer</option>
+                                </optgroup>
                             </select>
                         </div>
 
@@ -354,10 +376,22 @@
                         <div class="filter-actions">
                             <select id="role-filter">
                                 <option value="all">All Roles</option>
-                                <option value="sales">Sales</option>
-                                <option value="support">Support</option>
-                                <option value="tech">Tech Support</option>
-                                <option value="teacher">Teacher</option>
+                                <optgroup label="Non-Technical">
+                                    <option value="sales">Sales</option>
+                                    <option value="support">Support</option>
+                                    <option value="tech">Tech Support</option>
+                                    <option value="teacher">Teacher</option>
+                                </optgroup>
+                                <optgroup label="Software Development">
+                                    <option value="javascript">JavaScript</option>
+                                    <option value="python">Python</option>
+                                    <option value="java">Java</option>
+                                    <option value="react">React</option>
+                                    <option value="c++">C++</option>
+                                    <option value="swift">Swift</option>
+                                    <option value="fullstack">Full Stack</option>
+                                    <option value="devops">DevOps</option>
+                                </optgroup>
                             </select>
                             
                             <button class="btn btn-primary" onclick="exportCandidates()">
