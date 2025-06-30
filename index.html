@@ -1,465 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkillSnap - Voice Challenge Platform</title>
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/components.css">
-    <link rel="stylesheet" href="styles/responsive.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="assets/css/shared.css">
 </head>
 <body>
-    <div id="app">
-        <!-- Landing Page -->
-        <div id="landing-page" class="page active">
-            <div class="min-h-screen bg-gradient-blue">
-                <div class="container">
-                    <!-- Header -->
-                    <div class="text-center header-section">
-                        <div class="logo-container">
-                            <i data-lucide="zap" class="logo-icon"></i>
-                            <h1 class="main-title">SkillSnap</h1>
-                        </div>
-                        <p class="subtitle">Voice Challenge Platform</p>
-                        <p class="tagline">Hire smarter with real voices, not just resumes</p>
-                    </div>
+    <!-- Dark Mode Toggle -->
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <i data-lucide="sun" id="theme-icon"></i>
+        <span id="theme-text">Light</span>
+    </div>
 
-                    <!-- Hero Section -->
-                    <div class="hero-section">
-                        <h2 class="hero-title">Revolutionize Your Hiring Process</h2>
-                        <p class="hero-description">
-                            Assess communication skills, confidence, and cultural fit through AI-powered voice challenges
-                        </p>
-                        
-                        <div class="user-type-cards">
-                            <div class="user-card candidate-card" data-user-type="candidate">
-                                <div class="card-icon">🎯</div>
-                                <h3 class="card-title">I'm a Candidate</h3>
-                                <p class="card-description">Take voice challenges and showcase your communication skills</p>
-                                <div class="card-action">
-                                    Start Challenge <i data-lucide="arrow-right" class="inline-icon"></i>
-                                </div>
-                            </div>
-
-                            <div class="user-card recruiter-card" data-user-type="recruiter">
-                                <div class="card-icon">👥</div>
-                                <h3 class="card-title">I'm a Recruiter</h3>
-                                <p class="card-description">Review candidates and make data-driven hiring decisions</p>
-                                <div class="card-action">
-                                    View Dashboard <i data-lucide="arrow-right" class="inline-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Features -->
-                    <div class="features-section">
-                        <h3 class="features-title">Why Choose SkillSnap?</h3>
-                        <div class="features-grid">
-                            <div class="feature-item">
-                                <div class="feature-icon bg-blue-100">
-                                    <i data-lucide="clock" class="icon-blue"></i>
-                                </div>
-                                <h4 class="feature-title">50% Faster Screening</h4>
-                                <p class="feature-description">Reduce screening time with automated voice assessment</p>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon bg-green-100">
-                                    <i data-lucide="target" class="icon-green"></i>
-                                </div>
-                                <h4 class="feature-title">Bias-Free Hiring</h4>
-                                <p class="feature-description">Focus on skills and communication, not resume formatting</p>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon bg-purple-100">
-                                    <i data-lucide="trending-up" class="icon-purple"></i>
-                                </div>
-                                <h4 class="feature-title">Better Predictions</h4>
-                                <p class="feature-description">AI-powered insights predict job performance accurately</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Candidate Info Form -->
-        <div id="candidate-info-page" class="page">
-            <div class="min-h-screen bg-gradient-blue form-container">
-                <div class="form-card">
-                    <div class="form-header">
-                        <i data-lucide="zap" class="form-icon"></i>
-                        <h2 class="form-title">Get Started</h2>
-                        <p class="form-subtitle">Tell us a bit about yourself</p>
-                    </div>
-
-                    <form id="candidate-form">
-                        <div class="form-group">
-                            <label for="fullName">Full Name</label>
-                            <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="role">Role Interest</label>
-                            <select id="role" name="role" required>
-                                <option value="">Select a role</option>
-                                <optgroup label="Non-Technical Roles">
-                                    <option value="sales">Sales Representative</option>
-                                    <option value="support">Customer Support</option>
-                                    <option value="tech">Tech Support</option>
-                                    <option value="teacher">Teacher</option>
-                                </optgroup>
-                                <optgroup label="Software Development">
-                                    <option value="javascript">JavaScript Developer</option>
-                                    <option value="python">Python Developer</option>
-                                    <option value="java">Java Developer</option>
-                                    <option value="cpp">C++ Developer</option>
-                                    <option value="csharp">C# Developer</option>
-                                    <option value="php">PHP Developer</option>
-                                    <option value="ruby">Ruby Developer</option>
-                                    <option value="go">Go Developer</option>
-                                    <option value="swift">Swift Developer</option>
-                                    <option value="kotlin">Kotlin Developer</option>
-                                    <option value="rust">Rust Developer</option>
-                                    <option value="typescript">TypeScript Developer</option>
-                                </optgroup>
-                                <optgroup label="Engineering Roles">
-                                    <option value="fullstack">Full Stack Developer</option>
-                                    <option value="devops">DevOps Engineer</option>
-                                    <option value="mobile">Mobile Developer</option>
-                                    <option value="data">Data Engineer</option>
-                                </optgroup>
-                            </select>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-full">
-                            Continue to Challenges
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="#" class="logo">
+                <i data-lucide="zap"></i>
+                SkillSnap
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#" class="nav-link">Home</a>
+                <a href="pages/candidate/signup.html" class="nav-link">For Candidates</a>
+                <a href="pages/recruiter/login.html" class="nav-link">For Recruiters</a>
+            </nav>
+            
+            <div class="auth-section">
+                <div class="auth-buttons" id="auth-buttons">
+                    <div class="dropdown">
+                        <button class="btn-header dropdown-toggle" onclick="toggleDropdown()">
+                            Get Started
+                            <i data-lucide="chevron-down"></i>
                         </button>
-                    </form>
-
-                    <button class="btn btn-text btn-full" onclick="showPage('landing-page')">
-                        ← Back to Home
+                        <div class="dropdown-menu" id="dropdown-menu">
+                            <div class="dropdown-section">
+                                <h4>For Candidates</h4>
+                                <a href="pages/candidate/signup.html" class="dropdown-item">
+                                    <i data-lucide="user"></i>
+                                    Sign Up
+                                </a>
+                                <a href="pages/candidate/login.html" class="dropdown-item">
+                                    <i data-lucide="log-in"></i>
+                                    Login
+                                </a>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-section">
+                                <h4>For Recruiters</h4>
+                                <a href="pages/recruiter/register.html" class="dropdown-item">
+                                    <i data-lucide="briefcase"></i>
+                                    Register
+                                </a>
+                                <a href="pages/recruiter/login.html" class="dropdown-item">
+                                    <i data-lucide="key"></i>
+                                    Login
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                        <i data-lucide="sun" id="theme-icon"></i>
+                        <span id="theme-text">Light</span>
                     </button>
                 </div>
-            </div>
-        </div>
-
-        <!-- Challenge Selection -->
-        <div id="challenge-selection-page" class="page">
-            <div class="min-h-screen bg-gradient-blue">
-                <div class="container">
-                    <div class="page-header">
-                        <h2 class="page-title">Choose Your Challenge</h2>
-                        <p class="page-subtitle">Select a voice challenge that matches your role interest</p>
-                    </div>
-
-                    <div id="challenges-grid" class="challenges-grid">
-                        <!-- Challenges will be populated by JavaScript -->
-                    </div>
-
-                    <div class="page-navigation">
-                        <button class="btn btn-text" onclick="showPage('candidate-info-page')">
-                            ← Back to Info
-                        </button>
-                    </div>
+                
+                <div class="user-profile" id="user-profile" style="display: none;">
+                    <span id="user-name"></span>
+                    <button class="logout-btn" onclick="smartLogout()">Logout</button>
                 </div>
             </div>
         </div>
+    </header>
 
-        <!-- Challenge Recording -->
-        <div id="challenge-recording-page" class="page">
-            <div class="min-h-screen bg-gradient-blue">
-                <div class="container">
-                    <div class="recording-card">
-                        <div class="challenge-header">
-                            <span id="challenge-icon" class="challenge-emoji">📱</span>
-                            <h2 id="challenge-role" class="challenge-title">Sales Representative</h2>
-                            <div class="challenge-duration">
-                                <i data-lucide="clock" class="duration-icon"></i>
-                                <span id="challenge-time">30 seconds maximum</span>
-                            </div>
-                        </div>
-
-                        <div class="challenge-prompt">
-                            <h3>Your Challenge:</h3>
-                            <p id="challenge-text">Challenge prompt will appear here</p>
-                        </div>
-
-                        <div class="recording-interface">
-                            <div id="recording-button" class="recording-btn-container">
-                                <i data-lucide="mic" class="recording-icon"></i>
-                            </div>
-                            
-                            <div id="recording-timer" class="recording-timer">0:00</div>
-                            
-                            <div class="recording-controls">
-                                <button id="start-recording" class="btn btn-danger">
-                                    <i data-lucide="mic"></i>
-                                    Start Recording
-                                </button>
-                                <button id="stop-recording" class="btn btn-secondary hidden">
-                                    <i data-lucide="mic-off"></i>
-                                    Stop Recording
-                                </button>
-                                <button id="retake-recording" class="btn btn-primary hidden">
-                                    <i data-lucide="rotate-ccw"></i>
-                                    Retake
-                                </button>
+    <div class="main-content">
+        <!-- Landing Page -->
+        <div class="min-h-screen bg-gradient-blue">
+            <div class="container">
+                <!-- Hero Section -->
+                <div class="hero-section" style="padding-top: 2rem;">
+                    <h1 class="hero-title">Revolutionize Your Hiring Process</h1>
+                    <p class="hero-description">
+                        Assess communication skills, confidence, and cultural fit through AI-powered voice challenges
+                    </p>
+                    
+                    <div class="user-type-cards">
+                        <div class="user-card candidate-card" onclick="window.location.href='pages/candidate/signup.html'">
+                            <div class="card-icon">🎯</div>
+                            <h3 class="card-title">I'm a Candidate</h3>
+                            <p class="card-description">Take voice challenges and showcase your communication skills</p>
+                            <div class="card-action">
+                                Start Challenge <i data-lucide="arrow-right" class="inline-icon"></i>
                             </div>
                         </div>
 
-                        <div id="submit-section" class="submit-section hidden">
-                            <button id="submit-challenge" class="btn btn-success btn-large">
-                                Submit Challenge
-                            </button>
-                        </div>
-
-                        <div class="page-navigation">
-                            <button class="btn btn-text" onclick="showPage('challenge-selection-page')">
-                                ← Back to Challenges
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Candidate Dashboard -->
-        <div id="candidate-dashboard-page" class="page">
-            <div class="min-h-screen bg-gray">
-                <div class="container">
-                    <!-- Dashboard Header -->
-                    <div class="dashboard-header">
-                        <div class="dashboard-welcome">
-                            <h1 id="welcome-message">Welcome back, Candidate!</h1>
-                            <p>Track your challenge progress and results</p>
-                        </div>
-                        <div class="dashboard-actions">
-                            <button class="btn btn-primary" onclick="showPage('challenge-selection-page')">
-                                Take New Challenge
-                            </button>
-                            <button class="btn btn-text" onclick="showPage('landing-page')">
-                                Logout
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Stats -->
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon bg-blue-100">
-                                <i data-lucide="trophy" class="icon-blue"></i>
-                            </div>
-                            <div class="stat-info">
-                                <div class="stat-number">3</div>
-                                <div class="stat-label">Challenges Completed</div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon bg-green-100">
-                                <i data-lucide="star" class="icon-green"></i>
-                            </div>
-                            <div class="stat-info">
-                                <div class="stat-number">8.5</div>
-                                <div class="stat-label">Average Score</div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon bg-purple-100">
-                                <i data-lucide="award" class="icon-purple"></i>
-                            </div>
-                            <div class="stat-info">
-                                <div class="stat-number">12</div>
-                                <div class="stat-label">Profile Views</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Challenge History -->
-                    <div class="history-section">
-                        <h2 class="section-title">Your Challenge History</h2>
-                        <div id="challenge-history" class="history-list">
-                            <!-- Challenge history will be populated by JavaScript -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recruiter Dashboard -->
-        <div id="recruiter-dashboard-page" class="page">
-            <div class="min-h-screen bg-gray">
-                <!-- Header -->
-                <div class="recruiter-header">
-                    <div class="container">
-                        <div class="header-content">
-                            <div class="header-brand">
-                                <i data-lucide="zap" class="brand-icon"></i>
-                                <h1 class="brand-title">SkillSnap Recruiter</h1>
-                            </div>
-                            <div class="header-actions">
-                                <span class="user-welcome">Welcome, Recruiter</span>
-                                <button class="btn btn-text" onclick="showPage('landing-page')">
-                                    Logout
-                                </button>
+                        <div class="user-card recruiter-card" onclick="window.location.href='pages/recruiter/login.html'">
+                            <div class="card-icon">👥</div>
+                            <h3 class="card-title">I'm a Recruiter</h3>
+                            <p class="card-description">Review candidates and make data-driven hiring decisions</p>
+                            <div class="card-action">
+                                View Dashboard <i data-lucide="arrow-right" class="inline-icon"></i>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="container">
-                    <!-- Stats Cards -->
-                    <div class="recruiter-stats">
-                        <div class="stat-card">
-                            <div class="stat-icon bg-blue-100">
-                                <i data-lucide="users" class="icon-blue"></i>
+                <!-- Features -->
+                <div class="features-section">
+                    <h3 class="features-title">Why Choose SkillSnap?</h3>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon bg-blue-100">
+                                <i data-lucide="clock" class="icon-blue"></i>
                             </div>
-                            <div class="stat-info">
-                                <div class="stat-number">127</div>
-                                <div class="stat-label">Total Candidates</div>
-                            </div>
+                            <h4 class="feature-title">50% Faster Screening</h4>
+                            <p class="feature-description">Reduce screening time with automated voice assessment</p>
                         </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon bg-green-100">
-                                <i data-lucide="check-circle" class="icon-green"></i>
+                        <div class="feature-item">
+                            <div class="feature-icon bg-green-100">
+                                <i data-lucide="target" class="icon-green"></i>
                             </div>
-                            <div class="stat-info">
-                                <div class="stat-number">89</div>
-                                <div class="stat-label">Completed</div>
+                            <h4 class="feature-title">Bias-Free Hiring</h4>
+                            <p class="feature-description">Focus on skills and communication, not resume formatting</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon bg-purple-100">
+                                <i data-lucide="trending-up" class="icon-purple"></i>
                             </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon bg-yellow-100">
-                                <i data-lucide="clock" class="icon-yellow"></i>
-                            </div>
-                            <div class="stat-info">
-                                <div class="stat-number">38</div>
-                                <div class="stat-label">Pending</div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon bg-purple-100">
-                                <i data-lucide="bar-chart-3" class="icon-purple"></i>
-                            </div>
-                            <div class="stat-info">
-                                <div class="stat-number">8.4</div>
-                                <div class="stat-label">Avg Score</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Filters and Search -->
-                    <div class="filters-section">
-                        <div class="search-container">
-                            <div class="search-input">
-                                <i data-lucide="search" class="search-icon"></i>
-                                <input type="text" id="candidate-search" placeholder="Search candidates...">
-                            </div>
-                        </div>
-                        
-                        <div class="filter-actions">
-                            <select id="role-filter">
-                                <option value="all">All Roles</option>
-                                <optgroup label="Non-Technical">
-                                    <option value="sales">Sales</option>
-                                    <option value="support">Support</option>
-                                    <option value="tech">Tech Support</option>
-                                    <option value="teacher">Teacher</option>
-                                </optgroup>
-                                <optgroup label="Software Development">
-                                    <option value="javascript">JavaScript</option>
-                                    <option value="python">Python</option>
-                                    <option value="java">Java</option>
-                                    <option value="react">React</option>
-                                    <option value="c++">C++</option>
-                                    <option value="swift">Swift</option>
-                                    <option value="fullstack">Full Stack</option>
-                                    <option value="devops">DevOps</option>
-                                </optgroup>
-                            </select>
-                            
-                            <button class="btn btn-primary" onclick="exportCandidates()">
-                                <i data-lucide="download"></i>
-                                Export
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Candidates Table -->
-                    <div class="candidates-table-section">
-                        <div class="table-header">
-                            <h2 class="table-title">Candidate Results</h2>
-                        </div>
-                        
-                        <div class="table-container">
-                            <table id="candidates-table" class="candidates-table">
-                                <thead>
-                                    <tr>
-                                        <th>Candidate</th>
-                                        <th>Role</th>
-                                        <th>Overall Score</th>
-                                        <th>Skills Breakdown</th>
-                                        <th>Duration</th>
-                                        <th>Submitted</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="candidates-tbody">
-                                    <!-- Candidates will be populated by JavaScript -->
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div id="no-candidates" class="no-results hidden">
-                            <i data-lucide="users" class="no-results-icon"></i>
-                            <h3>No candidates found</h3>
-                            <p>Try adjusting your search or filter criteria.</p>
-                        </div>
-                    </div>
-
-                    <!-- Quick Actions -->
-                    <div class="quick-actions">
-                        <div class="action-card">
-                            <div class="action-header">
-                                <i data-lucide="message-circle" class="action-icon icon-blue"></i>
-                                <h3 class="action-title">Create New Challenge</h3>
-                            </div>
-                            <p class="action-description">Design custom voice challenges for specific roles</p>
-                            <button class="btn btn-primary btn-full" onclick="createNewChallenge()">Create Challenge</button>
-                        </div>
-                        
-                        <div class="action-card">
-                            <div class="action-header">
-                                <i data-lucide="bar-chart-3" class="action-icon icon-green"></i>
-                                <h3 class="action-title">Analytics Report</h3>
-                            </div>
-                            <p class="action-description">View detailed insights and hiring trends</p>
-                            <button class="btn btn-success btn-full" onclick="viewAnalytics()">View Analytics</button>
-                        </div>
-                        
-                        <div class="action-card">
-                            <div class="action-header">
-                                <i data-lucide="users" class="action-icon icon-purple"></i>
-                                <h3 class="action-title">Bulk Actions</h3>
-                            </div>
-                            <p class="action-description">Schedule interviews or send bulk communications</p>
-                            <button class="btn btn-purple btn-full" onclick="performBulkActions()">Bulk Actions</button>
+                            <h4 class="feature-title">Better Predictions</h4>
+                            <p class="feature-description">AI-powered insights predict job performance accurately</p>
                         </div>
                     </div>
                 </div>
@@ -467,9 +141,138 @@
         </div>
     </div>
 
-    <script src="js/data.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/components.js"></script>
-    <script src="js/app.js"></script>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SkillSnap</h3>
+                    <p style="color: #9ca3af; margin-bottom: 1rem;">
+                        Revolutionizing hiring through AI-powered voice challenges. 
+                        Connecting talent with opportunity through authentic communication assessment.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link" title="LinkedIn">
+                            <i data-lucide="linkedin"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Twitter">
+                            <i data-lucide="twitter"></i>
+                        </a>
+                        <a href="#" class="social-link" title="GitHub">
+                            <i data-lucide="github"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Email">
+                            <i data-lucide="mail"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>For Candidates</h3>
+                    <ul class="footer-links">
+                        <li><a href="pages/candidate/signup.html">Sign Up</a></li>
+                        <li><a href="pages/candidate/login.html">Login</a></li>
+                        <li><a href="#">Practice Challenges</a></li>
+                        <li><a href="#">Career Tips</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>For Recruiters</h3>
+                    <ul class="footer-links">
+                        <li><a href="pages/recruiter/register.html">Sign Up</a></li>
+                        <li><a href="pages/recruiter/login.html">Login</a></li>
+                        <li><a href="#">Create Challenges</a></li>
+                        <li><a href="#">Analytics Dashboard</a></li>
+                        <li><a href="#">Integration Guide</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 SkillSnap. All rights reserved. | Powered by AI voice technology</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/shared.js"></script>
+    <script>
+        // Theme Toggle Function
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update icon and text
+            if (newTheme === 'dark') {
+                themeIcon.setAttribute('data-lucide', 'moon');
+                themeText.textContent = 'Dark';
+            } else {
+                themeIcon.setAttribute('data-lucide', 'sun');
+                themeText.textContent = 'Light';
+            }
+            
+            lucide.createIcons();
+        }
+
+        // Dropdown Toggle Function
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdown-menu');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('dropdown-menu');
+            const trigger = document.querySelector('.dropdown-toggle');
+            
+            if (!trigger.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Initialize theme on page load
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            html.setAttribute('data-theme', savedTheme);
+            
+            if (savedTheme === 'dark') {
+                themeIcon.setAttribute('data-lucide', 'moon');
+                themeText.textContent = 'Dark';
+            } else {
+                themeIcon.setAttribute('data-lucide', 'sun');
+                themeText.textContent = 'Light';
+            }
+        }
+
+        // Initialize everything on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTheme();
+            checkAuthStatus();
+            lucide.createIcons();
+        });
+    </script>
 </body>
 </html> 
