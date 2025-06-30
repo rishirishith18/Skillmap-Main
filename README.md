@@ -1,89 +1,202 @@
 # SkillSnap - Voice Challenge Platform
 
-A modern voice challenge platform for hiring, built with vanilla HTML, CSS, and JavaScript.
+A modern AI-powered voice challenge platform for hiring, featuring both frontend and backend components with advanced voice recording capabilities.
 
-## 📁 File Structure
+## 🏗️ Project Structure
 
 ```
 SkillMap-Main/
-├── index.html                 # Main HTML file with all page structures
-├── README.md                  # This file
-├── styles/
-│   ├── main.css              # Global styles, typography, and layout
-│   ├── components.css        # Component-specific styles (cards, buttons, forms)
-│   └── responsive.css        # Recruiter dashboard and responsive styles
-└── js/
-    ├── data.js               # Mock data for challenges and candidates
-    ├── utils.js              # Utility functions and application state
-    ├── components.js         # Component rendering functions
-    └── app.js                # Main application logic and event handlers
+├── README.md                          # Project documentation
+├── index.html                         # Main landing page
+├── package.json                       # Frontend package configuration
+├── package-lock.json                  # Package lock file
+│
+├── frontend/                          # Frontend application
+│   ├── index.html                     # Frontend main page
+│   ├── pages/                         # Page components
+│   │   ├── candidate/                 # Candidate-specific pages
+│   │   ├── recruiter/                 # Recruiter-specific pages
+│   │   ├── voice/                     # Voice challenge pages
+│   │   └── api-test.html             # API testing page
+│   └── assets/                        # Static assets
+│       ├── css/                       # Stylesheets
+│       │   ├── main.css              # Main styles
+│       │   ├── components.css        # Component styles
+│       │   ├── responsive.css        # Responsive design
+│       │   └── shared.css            # Shared styles
+│       └── js/                        # JavaScript modules
+│           ├── app.js                # Main application logic
+│           ├── components.js         # UI components
+│           ├── data.js               # Data management
+│           ├── shared.js             # Shared utilities
+│           ├── utils.js              # Utility functions
+│           ├── voice-recorder.js     # Voice recording functionality
+│           ├── omnidimension-core.js # Core AI integration
+│           ├── omnidimension-integration.js # AI platform integration
+│           ├── live-interview.js     # Live interview features
+│           ├── recruiter-assistant.js # Recruiter tools
+│           └── practice-assistant.js  # Practice mode features
+│
+├── backend/                           # Backend API server
+│   ├── main.py                       # FastAPI main application
+│   ├── run.py                        # Application runner
+│   ├── config.py                     # Configuration settings
+│   ├── database.py                   # Database connection
+│   ├── models.py                     # Database models
+│   ├── schemas.py                    # Pydantic schemas
+│   ├── requirements.txt              # Python dependencies
+│   ├── requirements-minimal.txt     # Minimal dependencies
+│   ├── skillsnap.db                 # SQLite database
+│   ├── setup_postgresql.py          # PostgreSQL setup
+│   ├── simple_migration.py          # Database migrations
+│   ├── add_candidate_password_migration.py # Password migration
+│   ├── test_imports.py              # Import testing
+│   ├── routers/                     # API route handlers
+│   ├── services/                    # Business logic services
+│   ├── uploads/                     # File upload storage
+│   └── README.md                    # Backend documentation
+│
+├── fix_navigation.py                 # Navigation fix utility
+├── quick_setup_pgadmin.sh           # pgAdmin quick setup
+├── pgAdmin4_Setup_Guide.md          # pgAdmin setup guide
+└── setup_database.sql               # Database setup script
 ```
 
 ## 🚀 Getting Started
 
-1. **Clone or download** this repository
-2. **Open `index.html`** in a modern web browser
-3. **Start exploring** the application:
-   - Click "I'm a Candidate" to experience the candidate flow
-   - Click "I'm a Recruiter" to access the recruiter dashboard
+### Prerequisites
+- Python 3.8 or higher
+- Modern web browser
+- PostgreSQL (optional, SQLite included)
+
+### Quick Start
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/rishirishith18/Skillmap-Main.git
+   cd SkillMap-Main
+   ```
+
+2. **Setup Backend**
+   ```bash
+   cd backend
+   pip install -r requirements.txt
+   python run.py
+   ```
+
+3. **Setup Frontend**
+   ```bash
+   cd frontend
+   python -m http.server 8080
+   ```
+
+4. **Access the application**
+   - Frontend: http://localhost:8080
+   - Backend API: http://localhost:8000
+
+### Alternative Setup with npm
+```bash
+npm install
+npm start  # Starts frontend on port 3000
+npm run dev  # Starts frontend on port 8080
+```
 
 ## ✨ Features
 
-### For Candidates
-- 📝 Personal information form
-- 🎯 Role-specific voice challenges
-- 🎤 Voice recording interface with timer
-- 📊 Personal dashboard with challenge history
-- 📈 Performance scoring and analytics
+### 🎯 For Candidates
+- **Voice Challenges**: Record responses to role-specific questions
+- **Real-time Recording**: Advanced voice recording with timer and controls
+- **Practice Mode**: Practice challenges with AI feedback
+- **Personal Dashboard**: Track progress and view challenge history
+- **Live Interviews**: Participate in real-time voice interviews
+- **Performance Analytics**: Detailed scoring and improvement insights
 
-### For Recruiters
-- 👥 Candidate management dashboard
-- 🔍 Search and filter candidates
-- 📊 Detailed scoring breakdown
-- 🎧 Audio playback functionality
-- 📅 Interview scheduling
-- 📈 Analytics and reporting
+### 👥 For Recruiters
+- **Candidate Management**: Comprehensive candidate dashboard
+- **Advanced Search**: Filter candidates by skills, scores, and criteria
+- **Audio Playback**: Review candidate responses with enhanced controls
+- **AI-Powered Scoring**: Automated assessment with detailed breakdowns
+- **Live Interview Tools**: Conduct real-time voice interviews
+- **Analytics Dashboard**: Performance metrics and hiring insights
+- **Recruiter Assistant**: AI-powered recruitment recommendations
+
+### 🤖 AI Integration
+- **OmniDimension AI**: Advanced voice analysis and scoring
+- **Real-time Processing**: Instant feedback and assessment
+- **Multi-dimensional Analysis**: Communication, confidence, and technical skills
+- **Bias-free Evaluation**: Objective, AI-driven candidate assessment
 
 ## 🛠️ Technology Stack
 
+### Frontend
 - **HTML5** - Semantic markup and structure
-- **CSS3** - Modern styling with Flexbox and Grid
-- **Vanilla JavaScript** - Pure JavaScript without frameworks
+- **CSS3** - Modern styling with Flexbox/Grid and responsive design
+- **Vanilla JavaScript** - Modular ES6+ JavaScript
+- **Web Audio API** - Advanced voice recording capabilities
 - **Lucide Icons** - Beautiful, consistent iconography
+
+### Backend
+- **FastAPI** - Modern Python web framework
+- **SQLite/PostgreSQL** - Database options for development and production
+- **Pydantic** - Data validation and serialization
+- **Python 3.8+** - Core backend language
+
+### AI & Voice Processing
+- **OmniDimension AI** - Voice analysis and scoring platform
+- **Web Audio API** - Browser-based voice recording
+- **Real-time Processing** - Live audio analysis capabilities
 
 ## 📱 Responsive Design
 
-The application is fully responsive and works on:
-- 🖥️ Desktop computers
-- 📱 Mobile phones
-- 📟 Tablets
+Fully responsive design supporting:
+- 🖥️ Desktop computers (1200px+)
+- 📱 Mobile phones (320px+)
+- 📟 Tablets (768px+)
+- Dark/Light theme toggle
 
 ## 🔧 Development
 
-### File Organization
+### Backend Development
+```bash
+cd backend
+pip install -r requirements.txt
+python -m uvicorn main:app --reload --port 8000
+```
 
-- **`index.html`** - Contains all page structures in a single-page application format
-- **`styles/`** - Separated CSS for maintainability:
-  - `main.css` - Global styles and utilities
-  - `components.css` - Reusable component styles
-  - `responsive.css` - Dashboard and responsive layouts
-- **`js/`** - Modular JavaScript:
-  - `data.js` - All mock data and constants
-  - `utils.js` - Helper functions and state management
-  - `components.js` - DOM manipulation and rendering
-  - `app.js` - Event handlers and application flow
+### Frontend Development
+```bash
+cd frontend
+python -m http.server 8080
+# or
+npx http-server -p 8080
+```
 
-### Key Features of the Architecture
+### Database Setup
 
-1. **No Build Process** - Direct browser compatibility
-2. **Modular CSS** - Organized by purpose and component
-3. **Separation of Concerns** - Data, utilities, components, and app logic
-4. **State Management** - Simple vanilla JavaScript state
-5. **Responsive Design** - Mobile-first approach
+**PostgreSQL (Production)**:
+```bash
+python backend/setup_postgresql.py
+```
+
+**SQLite (Development)**:
+Database automatically created on first run.
+
+### Running Migrations
+```bash
+cd backend
+python simple_migration.py
+python add_candidate_password_migration.py
+```
+
+## 📊 API Documentation
+
+When the backend is running, visit:
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
 
 ## 🎨 Design System
 
-### Colors
+### Color Palette
 - **Primary Blue**: #2563eb
 - **Success Green**: #16a34a  
 - **Warning Yellow**: #ca8a04
@@ -91,38 +204,69 @@ The application is fully responsive and works on:
 - **Purple**: #9333ea
 
 ### Typography
-- **Font Family**: System fonts (Apple/Roboto/Segoe UI)
+- **Font Family**: System fonts (SF Pro, Roboto, Segoe UI)
 - **Weights**: 400 (normal), 500 (medium), 600 (semibold), 700 (bold)
 
-## 📊 Mock Data
+## 🔐 Configuration
 
-The application includes realistic mock data for:
-- **20 voice challenges** across multiple domains:
-  - **Non-Technical Roles**: Sales, Support, Tech Support, Teaching
-  - **Software Development**: JavaScript, Python, Java, C++, C#, PHP, Ruby, Go, Swift, Kotlin, Rust, TypeScript
-  - **Engineering Roles**: Full Stack, DevOps, Mobile Development, Data Engineering
-- **14 sample candidates** with complete scoring across different technical roles
-- Challenge history and performance metrics for software developers
+### Environment Variables
+Create `.env` file in backend directory:
+```env
+DATABASE_URL=postgresql://user:password@localhost/skillsnap
+SECRET_KEY=your-secret-key
+AI_API_KEY=your-omnidimension-api-key
+```
 
-## 🔮 Future Enhancements
+### Database Configuration
+- **Development**: SQLite (automatic)
+- **Production**: PostgreSQL (requires setup)
 
-- Real voice recording functionality
-- Backend API integration
-- User authentication
-- Advanced analytics
-- Bulk operations
-- Export functionality
-- Email notifications
+## 📈 Performance & Analytics
+
+- **Voice Quality Analysis**: Real-time audio quality assessment
+- **Response Time Tracking**: Measure candidate response times
+- **Engagement Metrics**: Track user interaction patterns
+- **Conversion Analytics**: Monitor candidate-to-hire success rates
+
+## 🔮 Advanced Features
+
+### Voice Recording Capabilities
+- **High-quality Recording**: 44.1kHz sample rate
+- **Real-time Visualization**: Audio waveform display
+- **Noise Reduction**: Background noise filtering
+- **Format Support**: WAV, MP3, and WebM formats
+
+### AI-Powered Assessment
+- **Communication Skills**: Clarity, pace, and articulation
+- **Confidence Levels**: Voice tone and delivery analysis
+- **Technical Accuracy**: Content relevance and correctness
+- **Cultural Fit**: Communication style alignment
 
 ## 🤝 Contributing
 
-This is a demonstration project. For production use, consider:
-- Adding proper error handling
-- Implementing real audio recording
-- Adding data persistence
-- Creating a proper backend API
-- Adding automated testing
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Commit changes: `git commit -am 'Add feature'`
+4. Push to branch: `git push origin feature-name`
+5. Submit a Pull Request
 
 ## 📄 License
 
-This project is for demonstration purposes. Feel free to use and modify as needed. # SkillMap-Main
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+- **Documentation**: Check the `/backend/README.md` for detailed API docs
+- **pgAdmin Setup**: See `pgAdmin4_Setup_Guide.md`
+- **Issues**: Report bugs on GitHub Issues
+- **Email**: Contact support for enterprise solutions
+
+## 🔗 Links
+
+- **Repository**: [https://github.com/rishirishith18/Skillmap-Main](https://github.com/rishirishith18/Skillmap-Main)
+- **Live Demo**: Coming soon
+- **API Docs**: http://localhost:8000/docs (when running)
+
+---
+
+**SkillSnap** - Revolutionizing hiring through AI-powered voice challenges. 🎤✨
