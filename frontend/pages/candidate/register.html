@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Profile - SkillSnap</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="../../assets/css/responsive.css">
+    <link rel="stylesheet" href="../../assets/css/shared.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <!-- Dark Mode Toggle -->
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <i data-lucide="sun" id="theme-icon"></i>
+        <span id="theme-text">Light</span>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="../../index.html" class="logo">
+                <i data-lucide="zap"></i>
+                SkillSnap
+            </a>
+            
+            <nav class="nav-links">
+                <a href="../../index.html" class="nav-link">Home</a>
+                <a href="../../pages/candidate/signup.html" class="nav-link">For Candidates</a>
+                <a href="../../pages/recruiter/login.html" class="nav-link">For Recruiters</a>
+            </nav>
+            
+            <div class="auth-buttons" id="auth-buttons">
+                <div class="user-type-dropdown">
+                    <div class="dropdown-trigger" onclick="toggleDropdown()">
+                        <i data-lucide="users"></i>
+                        <span>Get Started</span>
+                        <i data-lucide="chevron-down"></i>
+                    </div>
+                    <div class="dropdown-content" id="dropdown-content">
+                        <div class="dropdown-section">
+                            <div class="dropdown-header">Candidates</div>
+                            <a href="../../pages/candidate/login.html" class="dropdown-item">
+                                <i data-lucide="log-in"></i>
+                                Login
+                            </a>
+                            <a href="../../pages/candidate/register.html" class="dropdown-item">
+                                <i data-lucide="user-plus"></i>
+                                Sign Up
+                            </a>
+                        </div>
+                        <div class="dropdown-section">
+                            <div class="dropdown-header">Recruiters</div>
+                            <a href="../../pages/recruiter/login.html" class="dropdown-item">
+                                <i data-lucide="briefcase"></i>
+                                Login
+                            </a>
+                            <a href="../../pages/recruiter/register.html" class="dropdown-item">
+                                <i data-lucide="building"></i>
+                                Sign Up
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="user-profile" id="user-profile" style="display: none;">
+                <span id="user-name"></span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="min-h-screen bg-gradient-blue form-container">
+            <div class="auth-form">
+                <div class="form-header">
+                    <h2 class="form-title">Create Your Profile</h2>
+                    <p class="form-subtitle">Get started with voice challenges</p>
+                </div>
+
+                <div id="candidate-error" class="error-message" style="display: none;"></div>
+                <div id="candidate-success" class="success-message" style="display: none;"></div>
+
+                <form id="candidate-register-form">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" name="full_name" class="form-input" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-input" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Create Password</label>
+                        <input type="password" name="password" class="form-input" placeholder="Create a secure password" required minlength="6" id="password-field">
+                        <small class="form-helper">
+                            Password must be at least 6 characters long
+                        </small>
+                        <div class="password-strength" id="password-strength" style="display: none;">
+                            <div class="password-strength-bar" id="password-strength-bar"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" name="confirm_password" class="form-input" placeholder="Confirm your password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Phone Number (Optional)</label>
+                        <input type="tel" name="phone" class="form-input" placeholder="Enter your phone number">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Role Interest</label>
+                        <select name="role_interest" class="form-input" required>
+                            <option value="">Select a role</option>
+                            <optgroup label="Non-Technical Roles">
+                                <option value="sales">Sales Representative</option>
+                                <option value="support">Customer Support</option>
+                                <option value="tech">Tech Support</option>
+                                <option value="teacher">Teacher</option>
+                            </optgroup>
+                            <optgroup label="Software Development">
+                                <option value="javascript">JavaScript Developer</option>
+                                <option value="python">Python Developer</option>
+                                <option value="java">Java Developer</option>
+                                <option value="cpp">C++ Developer</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="candidate-btn">
+                        <span id="candidate-text">Create Profile & Continue</span>
+                        <span id="candidate-loading" class="loading" style="display: none;"></span>
+                    </button>
+                </form>
+
+                <div class="form-link">
+                    Already have an account? 
+                    <a href="../../pages/candidate/login.html">Login here</a>
+                </div>
+                
+                <div class="form-link">
+                    <a href="../../pages/candidate/signup.html">← Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SkillSnap</h3>
+                    <p style="color: #9ca3af; margin-bottom: 1rem;">
+                        Revolutionizing hiring through AI-powered voice challenges. 
+                        Connecting talent with opportunity through authentic communication assessment.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link" title="LinkedIn">
+                            <i data-lucide="linkedin"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Twitter">
+                            <i data-lucide="twitter"></i>
+                        </a>
+                        <a href="#" class="social-link" title="GitHub">
+                            <i data-lucide="github"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Email">
+                            <i data-lucide="mail"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>For Candidates</h3>
+                    <ul class="footer-links">
+                        <li><a href="../../pages/candidate/signup.html">Sign Up</a></li>
+                        <li><a href="../../pages/candidate/login.html">Login</a></li>
+                        <li><a href="#">Practice Challenges</a></li>
+                        <li><a href="#">Career Tips</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>For Recruiters</h3>
+                    <ul class="footer-links">
+                        <li><a href="../../pages/recruiter/register.html">Sign Up</a></li>
+                        <li><a href="../../pages/recruiter/login.html">Login</a></li>
+                        <li><a href="#">Create Challenges</a></li>
+                        <li><a href="#">Analytics Dashboard</a></li>
+                        <li><a href="#">Integration Guide</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 SkillSnap. All rights reserved. | Powered by AI voice technology</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/shared.js"></script>
+    <script>
+        // Theme Toggle Function
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            if (newTheme === 'dark') {
+                themeIcon.setAttribute('data-lucide', 'moon');
+                themeText.textContent = 'Dark';
+            } else {
+                themeIcon.setAttribute('data-lucide', 'sun');
+                themeText.textContent = 'Light';
+            }
+            
+            lucide.createIcons();
+        }
+
+        // Dropdown Toggle Function
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdown-content');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('dropdown-content');
+            const trigger = document.querySelector('.dropdown-trigger');
+            
+            if (!trigger.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Initialize theme on page load
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            html.setAttribute('data-theme', savedTheme);
+            
+            if (savedTheme === 'dark') {
+                themeIcon.setAttribute('data-lucide', 'moon');
+                themeText.textContent = 'Dark';
+            } else {
+                themeIcon.setAttribute('data-lucide', 'sun');
+                themeText.textContent = 'Light';
+            }
+        }
+
+        // Password validation and strength checker
+        function checkPasswordStrength(password) {
+            const strengthBar = document.getElementById('password-strength-bar');
+            const strengthContainer = document.getElementById('password-strength');
+            
+            if (password.length === 0) {
+                strengthContainer.style.display = 'none';
+                return;
+            }
+            
+            strengthContainer.style.display = 'block';
+            
+            let strength = 0;
+            
+            // Length check
+            if (password.length >= 6) strength += 1;
+            if (password.length >= 8) strength += 1;
+            
+            // Character variety checks
+            if (/[a-z]/.test(password)) strength += 1;
+            if (/[A-Z]/.test(password)) strength += 1;
+            if (/[0-9]/.test(password)) strength += 1;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+            
+            // Apply strength styling
+            strengthBar.className = 'password-strength-bar';
+            if (strength <= 2) {
+                strengthBar.classList.add('strength-weak');
+            } else if (strength <= 4) {
+                strengthBar.classList.add('strength-medium');
+            } else {
+                strengthBar.classList.add('strength-strong');
+            }
+        }
+
+        function validatePasswords() {
+            const password = document.querySelector('input[name="password"]').value;
+            const confirmPassword = document.querySelector('input[name="confirm_password"]').value;
+            
+            if (password !== confirmPassword) {
+                throw new Error('Passwords do not match');
+            }
+            
+            if (password.length < 6) {
+                throw new Error('Password must be at least 6 characters long');
+            }
+            
+            return true;
+        }
+
+
+
+        // Candidate Registration Form Handler
+        document.getElementById('candidate-register-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const candidateBtn = document.getElementById('candidate-btn');
+            const candidateText = document.getElementById('candidate-text');
+            const candidateLoading = document.getElementById('candidate-loading');
+            const errorDiv = document.getElementById('candidate-error');
+            const successDiv = document.getElementById('candidate-success');
+
+            // Show loading state
+            showLoading(candidateBtn, candidateText, candidateLoading);
+            hideError(errorDiv);
+            hideSuccess(successDiv);
+
+            try {
+                // Validate passwords first
+                validatePasswords();
+                
+                // Prepare candidate data with password
+                const candidateData = {
+                    full_name: formData.get('full_name'),
+                    email: formData.get('email'),
+                    password: formData.get('password'),
+                    phone: formData.get('phone') || null,
+                    role_interest: formData.get('role_interest')
+                };
+                
+                const result = await handleCandidateRegistration(candidateData);
+                
+                showSuccess(successDiv, 'Profile created successfully! Redirecting to your dashboard...');
+                
+                // Redirect to candidate dashboard
+                setTimeout(() => {
+                    window.location.href = '../../pages/candidate/dashboard.html';
+                }, 1500);
+                
+            } catch (error) {
+                showError(errorDiv, error.message);
+            } finally {
+                hideLoading(candidateBtn, candidateText, candidateLoading);
+            }
+        });
+
+        // Initialize everything on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTheme();
+            checkAuthStatus();
+            lucide.createIcons();
+            
+            // Initialize password validation after DOM is ready
+            const passwordField = document.getElementById('password-field');
+            const confirmField = document.querySelector('input[name="confirm_password"]');
+            
+            if (passwordField) {
+                passwordField.addEventListener('input', function() {
+                    checkPasswordStrength(this.value);
+                });
+            }
+            
+            if (confirmField) {
+                // Real-time password match validation
+                confirmField.addEventListener('input', function() {
+                    const password = passwordField.value;
+                    const confirmPassword = this.value;
+                    const formGroup = this.closest('.form-group');
+                    
+                    if (confirmPassword.length > 0) {
+                        if (password === confirmPassword) {
+                            formGroup.classList.remove('has-error');
+                            formGroup.classList.add('has-success');
+                        } else {
+                            formGroup.classList.remove('has-success');
+                            formGroup.classList.add('has-error');
+                        }
+                    } else {
+                        formGroup.classList.remove('has-error', 'has-success');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

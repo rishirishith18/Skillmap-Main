@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Dashboard - SkillSnap</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="../../assets/css/responsive.css">
+    <link rel="stylesheet" href="../../assets/css/shared.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="../../index.html" class="logo">
+                <i data-lucide="zap"></i>
+                SkillSnap
+            </a>
+            
+            <nav class="nav-links">
+                <a href="../../index.html" class="nav-link">Home</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="../../pages/voice/challenge.html" class="nav-link">Voice Challenge</a>
+                <a href="#" class="nav-link">History</a>
+                <a href="#" class="nav-link">Study Resources</a>
+            </nav>
+            
+            <div class="auth-buttons" id="auth-buttons" style="display: none;">
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                    <i data-lucide="sun" id="theme-icon"></i>
+                    <span id="theme-text">Light</span>
+                </button>
+            </div>
+            
+            <div class="user-profile" id="user-profile">
+                <span id="user-name">Candidate</span>
+                <button class="logout-btn" onclick="candidateLogout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="min-h-screen bg-gradient-blue">
+            <div class="container">
+                <div class="dashboard-card">
+                    <h2 class="dashboard-title">Welcome back, <span id="dashboard-user-name">Candidate</span>!</h2>
+                    <p class="dashboard-subtitle">Your SkillSnap candidate dashboard - practice and improve your communication skills</p>
+                    
+                    <!-- Stats Overview -->
+                    <div class="features-grid" style="margin-top: 2rem;">
+                        <div class="feature-item">
+                            <div class="feature-icon bg-blue-100">
+                                <i data-lucide="mic" class="icon-blue"></i>
+                            </div>
+                            <h4>Challenges Completed</h4>
+                            <p>Voice challenges you've completed</p>
+                            <div style="margin-top: 1rem;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: #1e40af;" id="completed-challenges">--</div>
+                                <div style="color: #6b7280;">Total Completed</div>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon bg-green-100">
+                                <i data-lucide="trending-up" class="icon-green"></i>
+                            </div>
+                            <h4>Average Score</h4>
+                            <p>Your average performance score</p>
+                            <div style="margin-top: 1rem;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: #1e40af;" id="avg-score">--</div>
+                                <div style="color: #6b7280;">Out of 10</div>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon bg-purple-100">
+                                <i data-lucide="clock" class="icon-purple"></i>
+                            </div>
+                            <h4>Practice Time</h4>
+                            <p>Total time spent practicing</p>
+                            <div style="margin-top: 1rem;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: #1e40af;" id="practice-time">--</div>
+                                <div style="color: #6b7280;">Minutes</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div style="margin-top: 2rem;">
+                        <h3 style="color: #1e40af; margin-bottom: 1rem;">Quick Actions</h3>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <button class="btn-primary" onclick="startNewChallenge()" style="flex: 1; min-width: 200px;">
+                                <i data-lucide="mic" style="margin-right: 0.5rem;"></i>
+                                Start New Challenge
+                            </button>
+                            <button class="btn-primary" onclick="viewHistory()" style="flex: 1; min-width: 200px;">
+                                <i data-lucide="history" style="margin-right: 0.5rem;"></i>
+                                View History
+                            </button>
+                            <button class="btn-primary" onclick="browseStudyMaterials()" style="flex: 1; min-width: 200px;">
+                                <i data-lucide="book-open" style="margin-right: 0.5rem;"></i>
+                                Study Materials
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Python Developer Specific Section -->
+                    <div id="python-developer-section" style="margin-top: 2rem; display: none;">
+                        <h3 style="color: #3776ab; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span>🐍</span> Python Developer Resources
+                        </h3>
+                        <div style="background: linear-gradient(135deg, #3776ab15 0%, #ffd43b15 100%); border-radius: 12px; padding: 1.5rem; border: 1px solid #3776ab30;">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                                <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #3776ab;">
+                                    <h4 style="color: #3776ab; margin: 0 0 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                                        <i data-lucide="code" style="width: 18px; height: 18px;"></i>
+                                        AI Coding Assistant
+                                    </h4>
+                                    <p style="margin: 0; font-size: 0.875rem; color: #6b7280;">Get real-time help with Python coding, debugging, and best practices from your AI coach.</p>
+                                </div>
+                                <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #ffd43b;">
+                                    <h4 style="color: #3776ab; margin: 0 0 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                                        <i data-lucide="brain" style="width: 18px; height: 18px;"></i>
+                                        Interview Prep
+                                    </h4>
+                                    <p style="margin: 0; font-size: 0.875rem; color: #6b7280;">Practice Python-specific technical interview questions and improve your problem-solving explanations.</p>
+                                </div>
+                                <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #3776ab;">
+                                    <h4 style="color: #3776ab; margin: 0 0 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                                        <i data-lucide="trending-up" style="width: 18px; height: 18px;"></i>
+                                        Career Guidance
+                                    </h4>
+                                    <p style="margin: 0; font-size: 0.875rem; color: #6b7280;">Get personalized advice on Python career paths, skill development, and job search strategies.</p>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; text-align: center;">
+                                <p style="color: #3776ab; font-weight: 600; margin: 0;">💡 Your Python AI Coach is ready! Look for the 🐍 Python AI Coach button in the bottom-right corner.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div style="margin-top: 2rem;">
+                        <h3 style="color: #1e40af; margin-bottom: 1rem;">Recent Activity</h3>
+                        <div id="recent-activity" style="background: var(--bg-secondary); border-radius: 8px; padding: 1.5rem;">
+                            <div style="text-align: center; color: var(--text-muted);">
+                                <i data-lucide="activity" style="width: 48px; height: 48px; margin-bottom: 1rem;"></i>
+                                <p>No recent activity yet. Start your first voice challenge!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Study Resources Section -->
+                    <div style="margin-top: 2rem;">
+                        <h3 style="color: #1e40af; margin-bottom: 1rem;">Study Resources</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                            <div class="study-resource-card" onclick="openStudyResource('interview-tips')">
+                                <i data-lucide="users" style="color: #3b82f6; margin-bottom: 0.5rem;"></i>
+                                <h4>Interview Tips</h4>
+                                <p>Essential tips for job interviews</p>
+                            </div>
+                            <div class="study-resource-card" onclick="openStudyResource('communication-skills')">
+                                <i data-lucide="message-circle" style="color: #10b981; margin-bottom: 0.5rem;"></i>
+                                <h4>Communication Skills</h4>
+                                <p>Improve your verbal communication</p>
+                            </div>
+                            <div class="study-resource-card" onclick="openStudyResource('industry-guides')">
+                                <i data-lucide="briefcase" style="color: #8b5cf6; margin-bottom: 0.5rem;"></i>
+                                <h4>Industry Guides</h4>
+                                <p>Role-specific preparation guides</p>
+                            </div>
+                            <div class="study-resource-card" onclick="openStudyResource('practice-scenarios')">
+                                <i data-lucide="play-circle" style="color: #f59e0b; margin-bottom: 0.5rem;"></i>
+                                <h4>Practice Scenarios</h4>
+                                <p>Common interview scenarios</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SkillSnap</h3>
+                    <p style="color: #9ca3af; margin-bottom: 1rem;">
+                        Revolutionizing hiring through AI-powered voice challenges. 
+                        Connecting talent with opportunity through authentic communication assessment.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>For Candidates</h3>
+                    <ul class="footer-links">
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="../../pages/voice/challenge.html">Voice Challenge</a></li>
+                        <li><a href="#">Practice Tips</a></li>
+                        <li><a href="#">Career Guidance</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Study Materials</a></li>
+                        <li><a href="#">Interview Tips</a></li>
+                        <li><a href="#">Industry Guides</a></li>
+                        <li><a href="#">FAQs</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Support</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 SkillSnap. All rights reserved. | Powered by AI voice technology</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- OmniDimension Integration -->
+    <script src="https://cdn.omnidim.io/sdk/v1/omnidim.js"></script>
+    <script src="../../assets/js/omnidimension-core.js"></script>
+    
+    <script src="../../assets/js/shared.js"></script>
+    <script>
+        // Quick action functions
+        function startNewChallenge() {
+            window.location.href = '../../pages/voice/challenge.html';
+        }
+        
+        function viewHistory() {
+            // Create simple history modal for now
+            alert('Voice History feature coming soon! This will show all your completed challenges with scores and feedback.');
+        }
+        
+        function browseStudyMaterials() {
+            // Scroll to study resources section
+            document.querySelector('.study-resource-card').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openStudyResource(type) {
+            const resources = {
+                'interview-tips': {
+                    title: 'Interview Tips',
+                    content: `
+                        <h3>Essential Interview Tips</h3>
+                        <ul>
+                            <li><strong>Prepare STAR Stories:</strong> Situation, Task, Action, Result format for behavioral questions</li>
+                            <li><strong>Research the Company:</strong> Know their mission, values, and recent news</li>
+                            <li><strong>Practice Common Questions:</strong> "Tell me about yourself", "Why this role?", "Strengths/Weaknesses"</li>
+                            <li><strong>Prepare Questions:</strong> Ask about team dynamics, growth opportunities, company culture</li>
+                            <li><strong>Body Language:</strong> Maintain eye contact, firm handshake, confident posture</li>
+                            <li><strong>Technical Preparation:</strong> Review job-specific skills and be ready for practical tests</li>
+                        </ul>
+                        <h4>Free Resources:</h4>
+                        <p>• <a href="https://www.glassdoor.com/Interview/" target="_blank">Glassdoor Interview Questions</a></p>
+                        <p>• <a href="https://www.indeed.com/career-advice/interviewing" target="_blank">Indeed Interview Guide</a></p>
+                        <p>• <a href="https://www.youtube.com/results?search_query=interview+tips" target="_blank">YouTube Interview Tips</a></p>
+                    `
+                },
+                'communication-skills': {
+                    title: 'Communication Skills',
+                    content: `
+                        <h3>Verbal Communication Excellence</h3>
+                        <ul>
+                            <li><strong>Clear Articulation:</strong> Speak slowly and pronounce words clearly</li>
+                            <li><strong>Active Listening:</strong> Listen fully before responding, ask clarifying questions</li>
+                            <li><strong>Confident Tone:</strong> Use a steady, confident voice without fillers (um, uh)</li>
+                            <li><strong>Structure Your Thoughts:</strong> Use frameworks like "First, Second, Finally"</li>
+                            <li><strong>Storytelling:</strong> Make your examples engaging and memorable</li>
+                            <li><strong>Adaptability:</strong> Match your communication style to your audience</li>
+                        </ul>
+                        <h4>Practice Resources:</h4>
+                        <p>• <a href="https://www.coursera.org/courses?query=communication%20skills" target="_blank">Coursera Communication Courses</a></p>
+                        <p>• <a href="https://www.toastmasters.org/" target="_blank">Toastmasters International</a></p>
+                        <p>• <a href="https://www.ted.com/talks?topics%5B%5D=communication" target="_blank">TED Talks on Communication</a></p>
+                    `
+                },
+                'industry-guides': {
+                    title: 'Industry-Specific Guides',
+                    content: `
+                        <h3>Role-Specific Preparation</h3>
+                        <div style="margin-bottom: 1rem;">
+                            <h4>Technology Roles:</h4>
+                            <p>• Focus on problem-solving approaches and technical communication</p>
+                            <p>• <a href="https://leetcode.com/" target="_blank">LeetCode for coding practice</a></p>
+                            <p>• <a href="https://www.hackerrank.com/" target="_blank">HackerRank challenges</a></p>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <h4>Sales & Marketing:</h4>
+                            <p>• Emphasize relationship building and persuasion skills</p>
+                            <p>• <a href="https://blog.hubspot.com/sales" target="_blank">HubSpot Sales Blog</a></p>
+                            <p>• <a href="https://www.salesforce.com/resources/" target="_blank">Salesforce Resources</a></p>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <h4>Healthcare:</h4>
+                            <p>• Highlight empathy, attention to detail, and patient care</p>
+                            <p>• <a href="https://www.who.int/" target="_blank">World Health Organization</a></p>
+                            <p>• <a href="https://www.medscape.com/" target="_blank">Medscape Education</a></p>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <h4>Finance:</h4>
+                            <p>• Demonstrate analytical thinking and attention to detail</p>
+                            <p>• <a href="https://www.investopedia.com/" target="_blank">Investopedia Learning</a></p>
+                            <p>• <a href="https://www.cfainstitute.org/" target="_blank">CFA Institute Resources</a></p>
+                        </div>
+                    `
+                },
+                'practice-scenarios': {
+                    title: 'Practice Scenarios',
+                    content: `
+                        <h3>Common Interview Scenarios</h3>
+                        <div style="margin-bottom: 1rem;">
+                            <h4>Behavioral Questions:</h4>
+                            <p>• "Describe a time you faced a challenging situation at work"</p>
+                            <p>• "Tell me about a time you worked in a team"</p>
+                            <p>• "How do you handle conflict with colleagues?"</p>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <h4>Problem-Solving Scenarios:</h4>
+                            <p>• "How would you prioritize multiple urgent tasks?"</p>
+                            <p>• "Describe your approach to learning new skills"</p>
+                            <p>• "How do you handle tight deadlines?"</p>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <h4>Role-Play Exercises:</h4>
+                            <p>• Customer service scenarios</p>
+                            <p>• Presentation simulations</p>
+                            <p>• Negotiation practice</p>
+                        </div>
+                        <h4>Practice Platforms:</h4>
+                        <p>• <a href="https://www.pramp.com/" target="_blank">Pramp - Peer Mock Interviews</a></p>
+                        <p>• <a href="https://interviewing.io/" target="_blank">Interviewing.io</a></p>
+                        <p>• <a href="https://www.glassdoor.com/Interview/" target="_blank">Glassdoor Interview Experiences</a></p>
+                    `
+                }
+            };
+
+            const resource = resources[type];
+            if (resource) {
+                // Create modal overlay
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.5);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1000;
+                `;
+                
+                const modalContent = document.createElement('div');
+                modalContent.style.cssText = `
+                    background: var(--bg-primary);
+                    border-radius: 12px;
+                    padding: 2rem;
+                    max-width: 600px;
+                    max-height: 80vh;
+                    overflow-y: auto;
+                    margin: 1rem;
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+                `;
+                
+                modalContent.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h2 style="color: var(--text-primary); margin: 0;">${resource.title}</h2>
+                        <button onclick="this.closest('[style*=\"position: fixed\"]').remove()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary);">×</button>
+                    </div>
+                    <div style="color: var(--text-primary); line-height: 1.6;">${resource.content}</div>
+                `;
+                
+                modal.appendChild(modalContent);
+                document.body.appendChild(modal);
+                
+                // Close modal when clicking overlay
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.remove();
+                    }
+                });
+            }
+        }
+        
+        // Load candidate dashboard data
+        async function loadCandidateData() {
+            const candidateAuth = localStorage.getItem('candidateAuth');
+            const candidateData = localStorage.getItem('candidateData');
+            
+            if (candidateAuth || candidateData) {
+                try {
+                    const candidate = JSON.parse(candidateAuth || candidateData);
+                    
+                    // Update user name
+                    document.getElementById('dashboard-user-name').textContent = candidate.full_name || candidate.name || 'Candidate';
+                    
+                    // Load statistics (placeholder for now)
+                    document.getElementById('completed-challenges').textContent = '0';
+                    document.getElementById('avg-score').textContent = '--';
+                    document.getElementById('practice-time').textContent = '0';
+                    
+                    // Load Python Developer specific OmniDimension widget
+                    if (candidate.role_interest === 'python') {
+                        loadPythonDeveloperWidget();
+                        showPythonDeveloperSection();
+                    }
+                    
+                } catch (error) {
+                    console.error('Error loading candidate data:', error);
+                }
+            }
+        }
+
+        // Python Developer specific OmniDimension widget
+        function loadPythonDeveloperWidget() {
+            console.log('🐍 Loading Python Developer AI Assistant...');
+            
+            // Create the widget script element
+            const widgetScript = document.createElement('script');
+            widgetScript.id = 'omnidimension-web-widget';
+            widgetScript.async = true;
+            widgetScript.src = 'https://backend.omnidim.io/web_widget.js?secret_key=b32dbc91d051df47d1205a449787f7ca';
+            
+            // Add the script to head
+            document.head.appendChild(widgetScript);
+            
+            // Add Python-specific styling and positioning
+            const pythonWidgetStyles = document.createElement('style');
+            pythonWidgetStyles.id = 'python-widget-styles';
+            pythonWidgetStyles.textContent = `
+                /* Python Developer Widget Customization */
+                #omnidimension-web-widget-container {
+                    position: fixed !important;
+                    bottom: 100px !important;
+                    right: 20px !important;
+                    z-index: 9998 !important;
+                }
+                
+                .omnidimension-widget-bubble {
+                    background: linear-gradient(135deg, #3776ab 0%, #ffd43b 100%) !important;
+                    border: 2px solid #3776ab !important;
+                    box-shadow: 0 8px 32px rgba(55, 118, 171, 0.3) !important;
+                }
+                
+                .omnidimension-widget-bubble:hover {
+                    transform: translateY(-3px) !important;
+                    box-shadow: 0 12px 40px rgba(55, 118, 171, 0.4) !important;
+                }
+                
+                .omnidimension-widget-bubble::before {
+                    content: "🐍 Python AI Coach" !important;
+                    position: absolute;
+                    top: -35px;
+                    right: 0;
+                    background: #3776ab;
+                    color: white;
+                    padding: 5px 10px;
+                    border-radius: 15px;
+                    font-size: 12px;
+                    font-weight: 600;
+                    white-space: nowrap;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                }
+                
+                .omnidimension-widget-bubble:hover::before {
+                    opacity: 1;
+                }
+                
+                /* Python-themed chat interface */
+                .omnidimension-chat-header {
+                    background: linear-gradient(135deg, #3776ab 0%, #ffd43b 100%) !important;
+                    color: white !important;
+                }
+                
+                .omnidimension-chat-header::before {
+                    content: "🐍 Python Developer AI Assistant" !important;
+                    font-weight: 600;
+                }
+                
+                @media (max-width: 768px) {
+                    #omnidimension-web-widget-container {
+                        bottom: 80px !important;
+                        right: 15px !important;
+                    }
+                }
+            `;
+            
+            document.head.appendChild(pythonWidgetStyles);
+            
+            // Add Python developer specific welcome message
+            setTimeout(() => {
+                addPythonWelcomeNotification();
+            }, 3000);
+            
+            console.log('✅ Python Developer AI Assistant loaded successfully');
+        }
+
+        // Add welcome notification for Python developers
+        function addPythonWelcomeNotification() {
+            const notification = document.createElement('div');
+            notification.id = 'python-welcome-notification';
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #3776ab 0%, #ffd43b 100%);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 8px 32px rgba(55, 118, 171, 0.3);
+                z-index: 9999;
+                max-width: 350px;
+                animation: slideInRight 0.5s ease-out;
+                cursor: pointer;
+                transition: transform 0.2s ease;
+            `;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <span style="font-size: 1.5rem;">🐍</span>
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 0.25rem;">Python AI Coach Ready!</div>
+                        <div style="font-size: 0.875rem; opacity: 0.9;">
+                            Get personalized Python development guidance, coding tips, and interview prep assistance.
+                        </div>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" 
+                            style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; opacity: 0.7; hover:opacity: 1;">×</button>
+                </div>
+                <div style="margin-top: 0.75rem; font-size: 0.75rem; opacity: 0.8;">
+                    Click the Python AI Coach button in the bottom-right corner to start chatting!
+                </div>
+            `;
+            
+            // Add animation keyframes
+            const animationStyles = document.createElement('style');
+            animationStyles.textContent = `
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(animationStyles);
+            
+            notification.addEventListener('mouseenter', () => {
+                notification.style.transform = 'translateY(-2px)';
+            });
+            
+            notification.addEventListener('mouseleave', () => {
+                notification.style.transform = 'translateY(0)';
+            });
+            
+            // Auto-remove after 10 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.style.animation = 'slideInRight 0.5s ease-out reverse';
+                    setTimeout(() => notification.remove(), 500);
+                }
+            }, 10000);
+            
+            document.body.appendChild(notification);
+        }
+
+        // Show Python Developer specific section
+        function showPythonDeveloperSection() {
+            const pythonSection = document.getElementById('python-developer-section');
+            if (pythonSection) {
+                pythonSection.style.display = 'block';
+                console.log('🐍 Python Developer section activated');
+            }
+        }
+        
+        // Initialize candidate dashboard
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize theme first
+            initializeTheme();
+            
+            const candidateAuth = localStorage.getItem('candidateAuth');
+            const candidateData = localStorage.getItem('candidateData');
+            
+            if (!candidateAuth && !candidateData) {
+                // Redirect to login if not authenticated
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Show authenticated state
+            checkAuthStatus();
+            
+            // Load candidate data
+            await loadCandidateData();
+            
+            // Initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+        
+        // Theme Toggle Function
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            if (themeIcon && themeText) {
+                if (newTheme === 'dark') {
+                    themeIcon.setAttribute('data-lucide', 'moon');
+                    themeText.textContent = 'Dark';
+                } else {
+                    themeIcon.setAttribute('data-lucide', 'sun');
+                    themeText.textContent = 'Light';
+                }
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }
+        }
+    </script>
+</body>
+</html> 

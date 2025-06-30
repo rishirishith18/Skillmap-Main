@@ -1,0 +1,497 @@
+/* CSS Variables for Light/Dark Mode */
+:root {
+    /* Light Mode Colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-accent: #f1f5f9;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    --border-color: #e5e7eb;
+    --shadow-light: rgba(0, 0, 0, 0.1);
+    --shadow-medium: rgba(0, 0, 0, 0.15);
+    
+    /* Brand Colors (consistent across modes) */
+    --brand-primary: #3b82f6;
+    --brand-secondary: #1d4ed8;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    
+    /* Gradients */
+    --gradient-blue: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-purple: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+/* Dark Mode Variables */
+[data-theme="dark"] {
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --bg-accent: #374151;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --text-muted: #9ca3af;
+    --border-color: #4b5563;
+    --shadow-light: rgba(0, 0, 0, 0.3);
+    --shadow-medium: rgba(0, 0, 0, 0.4);
+    
+    /* Dark mode gradients */
+    --gradient-blue: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Page Management */
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* Layout Utilities */
+.min-h-screen {
+    min-height: 100vh;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Background Gradients */
+.bg-gradient-blue {
+    background: var(--gradient-blue);
+}
+
+.bg-gray {
+    background-color: #f9fafb;
+}
+
+/* Typography */
+.main-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.tagline {
+    font-size: 1.125rem;
+    color: #2563eb;
+    font-weight: 500;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hero-description {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+    color: #6b7280;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+/* Header Section */
+.header-section {
+    margin-bottom: 3rem;
+    padding-top: 2rem;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.logo-icon {
+    width: 2rem;
+    height: 2rem;
+    color: #2563eb;
+    margin-right: 0.5rem;
+}
+
+/* Hero Section */
+.hero-section {
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.user-type-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Features Section */
+.features-section {
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.features-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    color: white;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.feature-item {
+    background: var(--bg-primary);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.feature-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.feature-description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Background Colors */
+.bg-blue-100 {
+    background-color: #dbeafe;
+}
+
+.bg-green-100 {
+    background-color: #d1fae5;
+}
+
+.bg-yellow-100 {
+    background-color: #fef3c7;
+}
+
+.bg-purple-100 {
+    background-color: #e9d5ff;
+}
+
+/* Icon Colors */
+.icon-blue {
+    color: #2563eb;
+}
+
+.icon-green {
+    color: #059669;
+}
+
+.icon-yellow {
+    color: #ca8a04;
+}
+
+.icon-purple {
+    color: #7c3aed;
+}
+
+.inline-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+/* Page Headers */
+.page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.page-navigation {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+/* Dark Mode Toggle - Removed fixed position version since header has theme toggle */
+
+/* User Type Dropdown */
+.user-type-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-trigger {
+    background: var(--bg-accent);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.dropdown-trigger:hover {
+    background: var(--brand-primary);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px var(--shadow-medium);
+    min-width: 200px;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.dropdown-content.show {
+    display: block;
+    animation: dropdownFadeIn 0.3s ease;
+}
+
+@keyframes dropdownFadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-section {
+    padding: 12px 0;
+}
+
+.dropdown-section:not(:last-child) {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dropdown-header {
+    padding: 8px 16px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 10px 16px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background: var(--bg-accent);
+}
+
+.dropdown-item i {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    color: var(--text-secondary);
+}
+
+/* User Type Cards */
+.user-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    background: white;
+}
+
+.card-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #1f2937;
+}
+
+.card-description {
+    color: #4b5563;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.card-action {
+    color: var(--brand-primary);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.candidate-card:hover {
+    border-color: var(--brand-primary);
+}
+
+.candidate-card:hover .card-action {
+    color: var(--brand-primary);
+}
+
+.recruiter-card:hover {
+    border-color: var(--success);
+}
+
+.recruiter-card:hover .card-action {
+    color: var(--success);
+}
+
+/* Dark mode specific overrides for user cards */
+[data-theme="dark"] .user-card {
+    background: rgba(31, 41, 55, 0.95);
+    border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+[data-theme="dark"] .user-card:hover {
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .card-title {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .card-description {
+    color: var(--text-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .main-title {
+        font-size: 2rem;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .user-type-cards {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+/* Dashboard content spacing */
+.dashboard-card .features-grid {
+    margin-top: 2rem;
+}
+
+.dashboard-card .feature-item {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.dashboard-card .feature-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--shadow-medium);
+}
+
+[data-theme="dark"] .dashboard-card .feature-item {
+    background: var(--bg-accent);
+} 

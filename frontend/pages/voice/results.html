@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Challenge Results - SkillSnap</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="../../assets/css/responsive.css">
+    <link rel="stylesheet" href="../../assets/css/shared.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .results-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .results-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .overall-score {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        
+        .score-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .score-item {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+        
+        .score-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        
+        .score-bar {
+            background: #e5e7eb;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981);
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+        }
+        
+        .score-value {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1e40af;
+        }
+        
+        .feedback-section {
+            margin: 2rem 0;
+        }
+        
+        .feedback-item {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-left: 4px solid #1e40af;
+            background: #f8fafc;
+        }
+        
+        .feedback-title {
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feedback-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feedback-list li {
+            padding: 0.25rem 0;
+            color: #374151;
+        }
+        
+        .feedback-list li:before {
+            content: "✓ ";
+            color: #10b981;
+            font-weight: bold;
+        }
+        
+        .improvement-list li:before {
+            content: "→ ";
+            color: #f59e0b;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e40af;
+        }
+        
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .loading-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #1e40af;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="../../index.html" class="logo">
+                <i data-lucide="zap"></i>
+                SkillSnap
+            </a>
+            
+            <nav class="nav-links">
+                <a href="../../index.html" class="nav-link">Home</a>
+                <a href="../../pages/candidate/signup.html" class="nav-link">For Candidates</a>
+                <a href="../../pages/recruiter/login.html" class="nav-link">For Recruiters</a>
+            </nav>
+            
+            <div class="auth-buttons" id="auth-buttons">
+                <a href="../../pages/recruiter/login.html" class="btn-header btn-login">Login</a>
+                <a href="../../pages/recruiter/register.html" class="btn-header btn-register">Sign Up</a>
+            </div>
+            
+            <div class="user-profile" id="user-profile" style="display: none;">
+                <span id="user-name"></span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="results-container">
+            <!-- Loading State -->
+            <div id="loading-state" class="loading-state">
+                <div class="loading-spinner"></div>
+                <h2>Analyzing Your Voice Challenge...</h2>
+                <p>Our AI is processing your recording and generating detailed feedback. This may take a moment.</p>
+            </div>
+
+            <!-- Results Content (Hidden initially) -->
+            <div id="results-content" style="display: none;">
+                <!-- Header -->
+                <div class="results-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h2 style="color: #1e40af; margin: 0;">Your Voice Challenge Results</h2>
+                        <a href="../../pages/candidate/dashboard.html" class="btn-header btn-login">← Back to Dashboard</a>
+                    </div>
+                    <p style="color: #6b7280;">Completed on <span id="completion-date"></span></p>
+                </div>
+
+                <!-- Overall Score -->
+                <div class="overall-score">
+                    <div class="score-circle" id="overall-score">--</div>
+                    <h3 style="margin: 0 0 0.5rem 0;">Overall Score</h3>
+                    <p style="margin: 0; opacity: 0.9;" id="overall-rating">Calculating...</p>
+                </div>
+
+                <!-- Score Breakdown -->
+                <div class="results-card">
+                    <h3 style="color: #1e40af; margin-bottom: 1.5rem;">Detailed Scoring</h3>
+                    <div class="score-breakdown">
+                        <div class="score-item">
+                            <div class="score-label">Fluency (25%)</div>
+                            <div class="score-bar">
+                                <div class="score-fill" id="fluency-bar" style="width: 0%"></div>
+                            </div>
+                            <div class="score-value" id="fluency-score">--</div>
+                        </div>
+                        
+                        <div class="score-item">
+                            <div class="score-label">Confidence (20%)</div>
+                            <div class="score-bar">
+                                <div class="score-fill" id="confidence-bar" style="width: 0%"></div>
+                            </div>
+                            <div class="score-value" id="confidence-score">--</div>
+                        </div>
+                        
+                        <div class="score-item">
+                            <div class="score-label">Relevance (25%)</div>
+                            <div class="score-bar">
+                                <div class="score-fill" id="relevance-bar" style="width: 0%"></div>
+                            </div>
+                            <div class="score-value" id="relevance-score">--</div>
+                        </div>
+                        
+                        <div class="score-item">
+                            <div class="score-label">Clarity (20%)</div>
+                            <div class="score-bar">
+                                <div class="score-fill" id="clarity-bar" style="width: 0%"></div>
+                            </div>
+                            <div class="score-value" id="clarity-score">--</div>
+                        </div>
+                        
+                        <div class="score-item">
+                            <div class="score-label">Tone (10%)</div>
+                            <div class="score-bar">
+                                <div class="score-fill" id="tone-bar" style="width: 0%"></div>
+                            </div>
+                            <div class="score-value" id="tone-score">--</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Feedback -->
+                <div class="results-card">
+                    <h3 style="color: #1e40af; margin-bottom: 1.5rem;">AI Analysis & Feedback</h3>
+                    
+                    <div class="feedback-section">
+                        <div class="feedback-item">
+                            <div class="feedback-title">🎯 Key Points Identified</div>
+                            <ul class="feedback-list" id="key-points-list">
+                                <li>Loading analysis...</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="feedback-item">
+                            <div class="feedback-title">💪 Strengths Demonstrated</div>
+                            <ul class="feedback-list" id="strengths-list">
+                                <li>Loading analysis...</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="feedback-item">
+                            <div class="feedback-title">📈 Areas for Improvement</div>
+                            <ul class="feedback-list improvement-list" id="improvements-list">
+                                <li>Loading analysis...</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="feedback-item">
+                            <div class="feedback-title">📝 Overall Feedback</div>
+                            <p id="overall-feedback" style="margin: 0; color: #374151; line-height: 1.6;">
+                                Loading detailed feedback...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Statistics -->
+                <div class="results-card">
+                    <h3 style="color: #1e40af; margin-bottom: 1.5rem;">Performance Metrics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="word-count">--</div>
+                            <div class="stat-label">Words Spoken</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="speaking-rate">--</div>
+                            <div class="stat-label">Words per Minute</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="duration">--</div>
+                            <div class="stat-label">Duration</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="filler-words">--</div>
+                            <div class="stat-label">Filler Words</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="results-card" style="text-align: center;">
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn-primary" onclick="retakeChallenge()">
+                            <i data-lucide="rotate-ccw"></i> Retake Challenge
+                        </button>
+                        <button class="btn-primary" onclick="shareResults()">
+                            <i data-lucide="share-2"></i> Share Results
+                        </button>
+                        <button class="btn-primary" onclick="window.location.href='../../pages/candidate/dashboard.html'">
+                            <i data-lucide="home"></i> Back to Dashboard
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SkillSnap</h3>
+                    <p style="color: #9ca3af; margin-bottom: 1rem;">
+                        AI-powered voice assessment technology for better hiring decisions.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Understanding Your Scores</a></li>
+                        <li><a href="#">Improving Your Performance</a></li>
+                        <li><a href="#">Technical Support</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 SkillSnap. All rights reserved. | Results powered by AI analysis</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/shared.js"></script>
+    <script>
+        // Initialize results page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeResults();
+        });
+        
+        async function initializeResults() {
+            const candidateData = localStorage.getItem('candidateData');
+            
+            if (!candidateData) {
+                window.location.href = '/pages/candidate/login.html';
+                return;
+            }
+            
+            // Update header authentication state
+            const candidate = JSON.parse(candidateData);
+            showCandidateAuthenticatedState(candidate);
+            
+            // Get submission ID from URL params
+            const urlParams = new URLSearchParams(window.location.search);
+            const submissionId = urlParams.get('submission_id');
+            
+            if (submissionId) {
+                // Load real results from backend
+                await loadSubmissionResults(submissionId);
+            } else {
+                // Show demo results after delay
+                setTimeout(showDemoResults, 3000);
+            }
+            
+            // Set completion date
+            document.getElementById('completion-date').textContent = new Date().toLocaleDateString();
+        }
+        
+        async function loadSubmissionResults(submissionId) {
+            try {
+                const response = await fetch(`${API_URL}/api/v1/voice/results/${submissionId}`);
+                
+                if (response.ok) {
+                    const results = await response.json();
+                    displayResults(results);
+                } else {
+                    console.error('Failed to load results');
+                    showDemoResults();
+                }
+            } catch (error) {
+                console.error('Error loading results:', error);
+                showDemoResults();
+            }
+        }
+        
+        function showDemoResults() {
+            // Demo results for when backend is not available
+            const demoResults = {
+                overall_score: 0.82,
+                scores: {
+                    fluency: 0.85,
+                    confidence: 0.78,
+                    relevance: 0.88,
+                    clarity: 0.80,
+                    tone: 0.79
+                },
+                ai_analysis: {
+                    key_points: [
+                        "Demonstrated problem-solving methodology",
+                        "Showed technical understanding",
+                        "Explained solution clearly"
+                    ],
+                    strengths: [
+                        "Clear communication style",
+                        "Logical structure to response",
+                        "Good technical vocabulary"
+                    ],
+                    areas_for_improvement: [
+                        "Could provide more specific examples",
+                        "Consider speaking slightly slower",
+                        "Add more detail on implementation"
+                    ],
+                    overall_feedback: "Strong response showing good technical understanding and communication skills. The candidate demonstrated a clear thought process and provided relevant examples. With minor improvements in pacing and additional detail, this would be an excellent response."
+                },
+                linguistic_features: {
+                    word_count: 147,
+                    speaking_rate: 165,
+                    filler_words_count: 3
+                },
+                duration: 53
+            };
+            
+            displayResults(demoResults);
+        }
+        
+        function displayResults(results) {
+            // Hide loading state and show results
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('results-content').style.display = 'block';
+            
+            // Overall score
+            const overallScore = Math.round(results.overall_score * 100);
+            document.getElementById('overall-score').textContent = overallScore;
+            document.getElementById('overall-rating').textContent = getRatingText(overallScore);
+            
+            // Individual scores
+            const scores = results.scores;
+            updateScoreBar('fluency', scores.fluency);
+            updateScoreBar('confidence', scores.confidence);
+            updateScoreBar('relevance', scores.relevance);
+            updateScoreBar('clarity', scores.clarity);
+            updateScoreBar('tone', scores.tone);
+            
+            // AI Feedback
+            if (results.ai_analysis) {
+                updateFeedbackList('key-points-list', results.ai_analysis.key_points);
+                updateFeedbackList('strengths-list', results.ai_analysis.strengths);
+                updateFeedbackList('improvements-list', results.ai_analysis.areas_for_improvement);
+                document.getElementById('overall-feedback').textContent = results.ai_analysis.overall_feedback;
+            }
+            
+            // Performance metrics
+            if (results.linguistic_features) {
+                document.getElementById('word-count').textContent = results.linguistic_features.word_count || '--';
+                document.getElementById('speaking-rate').textContent = results.linguistic_features.speaking_rate || '--';
+                document.getElementById('filler-words').textContent = results.linguistic_features.filler_words_count || '--';
+            }
+            
+            if (results.duration) {
+                const minutes = Math.floor(results.duration / 60);
+                const seconds = results.duration % 60;
+                document.getElementById('duration').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+        
+        function updateScoreBar(category, score) {
+            const percentage = Math.round(score * 100);
+            document.getElementById(`${category}-score`).textContent = `${percentage}%`;
+            
+            // Animate the score bar
+            setTimeout(() => {
+                document.getElementById(`${category}-bar`).style.width = `${percentage}%`;
+            }, 500);
+        }
+        
+        function updateFeedbackList(listId, items) {
+            const list = document.getElementById(listId);
+            list.innerHTML = '';
+            
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                list.appendChild(li);
+            });
+        }
+        
+        function getRatingText(score) {
+            if (score >= 90) return "Excellent Performance";
+            if (score >= 80) return "Strong Performance";
+            if (score >= 70) return "Good Performance";
+            if (score >= 60) return "Fair Performance";
+            return "Needs Improvement";
+        }
+        
+        function retakeChallenge() {
+            window.location.href = 'challenge.html';
+        }
+        
+        function shareResults() {
+            const overallScore = document.getElementById('overall-score').textContent;
+            const shareText = `I just completed a voice challenge on SkillSnap and scored ${overallScore}%! 🎤✨`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SkillSnap Voice Challenge Results',
+                    text: shareText,
+                    url: window.location.href
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(shareText + ' ' + window.location.href);
+                alert('Results copied to clipboard!');
+            }
+        }
+    </script>
+</body>
+</html> 

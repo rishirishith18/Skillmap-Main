@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Practice - SkillSnap</title>
+    <link rel="stylesheet" href="../../assets/css/shared.css">
+    <style>
+        .practice-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .practice-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .practice-header h1 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .role-selector {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .role-card {
+            background: var(--background-color);
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .role-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .role-card.selected {
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+        }
+
+        .practice-session {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .session-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .practice-btn {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .practice-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .practice-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .session-status {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+
+        .status-waiting {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-color);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-complete {
+            background: rgba(139, 69, 19, 0.1);
+            color: #92400e;
+            border: 1px solid rgba(139, 69, 19, 0.3);
+        }
+
+        .practice-tips {
+            background: var(--background-secondary);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .tip-card {
+            background: var(--card-background);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .session-results {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--background-secondary);
+            border-radius: 0.75rem;
+            display: none;
+        }
+
+        .results-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .practice-container {
+                padding: 1rem;
+            }
+            
+            .session-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">
+                <span>🎯 SkillSnap</span>
+            </a>
+            <div class="nav-menu">
+                <a href="../candidate/dashboard.html" class="nav-link">Dashboard</a>
+                <a href="challenge.html" class="nav-link">Voice Challenge</a>
+                <a href="practice-interview.html" class="nav-link active">Practice</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="practice-container">
+        <div class="practice-header">
+            <h1>🎙️ Interview Practice Assistant</h1>
+            <p>Practice your interview skills with our AI-powered voice coach. Get personalized feedback and build confidence before your actual assessment.</p>
+        </div>
+
+        <div class="role-selector">
+            <h3>Select Your Target Role</h3>
+            <div class="role-grid">
+                <div class="role-card" data-role="sales">
+                    <h4>💼 Sales Representative</h4>
+                    <p>Communication & persuasion skills</p>
+                </div>
+                <div class="role-card" data-role="support">
+                    <h4>🎧 Customer Support</h4>
+                    <p>Problem-solving & empathy</p>
+                </div>
+                <div class="role-card" data-role="javascript">
+                    <h4>⚡ JavaScript Developer</h4>
+                    <p>Technical communication</p>
+                </div>
+                <div class="role-card" data-role="python">
+                    <h4>🐍 Python Developer</h4>
+                    <p>Algorithm explanation</p>
+                </div>
+                <div class="role-card" data-role="java">
+                    <h4>☕ Java Developer</h4>
+                    <p>System design discussion</p>
+                </div>
+                <div class="role-card" data-role="cpp">
+                    <h4>⚙️ C++ Developer</h4>
+                    <p>Performance optimization</p>
+                </div>
+                <div class="role-card" data-role="tech">
+                    <h4>🔧 Tech Support</h4>
+                    <p>Technical troubleshooting</p>
+                </div>
+                <div class="role-card" data-role="teacher">
+                    <h4>📚 Teacher</h4>
+                    <p>Student engagement</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="practice-session">
+            <h3>Practice Session</h3>
+            <div id="session-status" class="session-status status-waiting">
+                Select a role above to begin your practice session
+            </div>
+
+            <div class="session-controls">
+                <button id="start-practice-btn" class="practice-btn" disabled>
+                    Start Practice Interview
+                </button>
+                <button id="stop-practice-btn" class="practice-btn" style="display: none;" disabled>
+                    End Session
+                </button>
+            </div>
+
+            <div id="session-timer" style="text-align: center; font-size: 1.5rem; font-weight: bold; display: none;">
+                00:00
+            </div>
+
+            <div id="session-results" class="session-results">
+                <div class="results-header">
+                    <span>📊</span>
+                    <span>Practice Session Results</span>
+                </div>
+                <div id="results-content"></div>
+            </div>
+        </div>
+
+        <div class="practice-tips">
+            <h3>💡 Practice Tips</h3>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h4>🎯 Be Specific</h4>
+                    <p>Provide concrete examples and specific details when answering questions.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>🗣️ Speak Clearly</h4>
+                    <p>Maintain good pace, clear pronunciation, and confident tone.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>💭 Think Aloud</h4>
+                    <p>Explain your thought process when solving problems or making decisions.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>❓ Ask Questions</h4>
+                    <p>Show engagement by asking clarifying questions when appropriate.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OmniDimension SDK -->
+    <script src="https://cdn.omnidim.io/sdk/v1/omnidim.js"></script>
+    <script src="../../assets/js/omnidimension-core.js"></script>
+    <script>
+        class InterviewPracticeManager {
+            constructor() {
+                this.selectedRole = null;
+                this.currentSession = null;
+                this.sessionTimer = null;
+                this.startTime = null;
+                this.init();
+            }
+
+            init() {
+                this.setupRoleSelection();
+                this.setupSessionControls();
+                this.waitForOmniDim();
+            }
+
+            waitForOmniDim() {
+                const checkOmniDim = () => {
+                    if (window.skillSnapOmni && window.skillSnapOmni.isReady()) {
+                        console.log('✅ OmniDimension ready for practice sessions');
+                    } else {
+                        setTimeout(checkOmniDim, 1000);
+                    }
+                };
+                checkOmniDim();
+            }
+
+            setupRoleSelection() {
+                const roleCards = document.querySelectorAll('.role-card');
+                roleCards.forEach(card => {
+                    card.addEventListener('click', () => {
+                        // Remove previous selection
+                        roleCards.forEach(c => c.classList.remove('selected'));
+                        
+                        // Select current role
+                        card.classList.add('selected');
+                        this.selectedRole = card.dataset.role;
+                        
+                        // Enable start button
+                        document.getElementById('start-practice-btn').disabled = false;
+                        
+                        // Update status
+                        this.updateStatus(`Ready to practice for ${this.getRoleName(this.selectedRole)} role`, 'waiting');
+                    });
+                });
+            }
+
+            setupSessionControls() {
+                document.getElementById('start-practice-btn').addEventListener('click', () => {
+                    this.startPracticeSession();
+                });
+
+                document.getElementById('stop-practice-btn').addEventListener('click', () => {
+                    this.stopPracticeSession();
+                });
+            }
+
+            async startPracticeSession() {
+                if (!this.selectedRole) return;
+
+                try {
+                    this.updateStatus('Starting practice session...', 'waiting');
+                    
+                    // Create practice assistant if OmniDimension is available
+                    if (window.skillSnapOmni && window.skillSnapOmni.isReady()) {
+                        this.currentSession = await this.startOmniDimSession();
+                    } else {
+                        this.currentSession = await this.startFallbackSession();
+                    }
+
+                    if (this.currentSession) {
+                        this.updateStatus('Practice session active - AI coach is ready!', 'active');
+                        this.startSessionTimer();
+                        this.toggleControls(true);
+                    }
+
+                } catch (error) {
+                    console.error('❌ Failed to start practice session:', error);
+                    this.updateStatus('Failed to start session. Please try again.', 'waiting');
+                }
+            }
+
+            async startOmniDimSession() {
+                try {
+                    // Use the practice assistant from our integration
+                    const practiceAssistant = new window.SkillSnapOmniCore();
+                    
+                    // Create role-specific practice session
+                    const session = await practiceAssistant.startPracticeSession(this.selectedRole, 10);
+                    
+                    return {
+                        type: 'omnidim',
+                        id: session?.callId || 'practice-' + Date.now(),
+                        role: this.selectedRole,
+                        startTime: Date.now()
+                    };
+                    
+                } catch (error) {
+                    console.error('❌ OmniDim session failed:', error);
+                    return this.startFallbackSession();
+                }
+            }
+
+            async startFallbackSession() {
+                // Fallback practice session without OmniDimension
+                return {
+                    type: 'fallback',
+                    id: 'practice-' + Date.now(),
+                    role: this.selectedRole,
+                    startTime: Date.now(),
+                    questions: this.getRoleQuestions(this.selectedRole)
+                };
+            }
+
+            getRoleQuestions(role) {
+                const questions = {
+                    'sales': [
+                        "Tell me about a time you exceeded your sales targets.",
+                        "How do you handle rejection from potential customers?",
+                        "Describe your approach to building customer relationships."
+                    ],
+                    'support': [
+                        "How would you handle an angry customer?",
+                        "Describe a time you solved a complex customer problem.",
+                        "How do you prioritize multiple support tickets?"
+                    ],
+                    'javascript': [
+                        "Explain how JavaScript closures work.",
+                        "What's the difference between let, const, and var?",
+                        "How would you optimize a slow-performing JavaScript application?"
+                    ],
+                    'python': [
+                        "Explain the difference between lists and tuples in Python.",
+                        "How would you debug a Python application?",
+                        "Describe your experience with Python frameworks."
+                    ],
+                    'java': [
+                        "Explain object-oriented programming principles.",
+                        "How do you handle memory management in Java?",
+                        "Describe your experience with Java frameworks."
+                    ],
+                    'cpp': [
+                        "Explain pointer arithmetic in C++.",
+                        "How do you optimize C++ code for performance?",
+                        "Describe your experience with memory management."
+                    ],
+                    'tech': [
+                        "How do you troubleshoot network connectivity issues?",
+                        "Describe your process for diagnosing software problems.",
+                        "How do you explain technical concepts to non-technical users?"
+                    ],
+                    'teacher': [
+                        "How do you engage students who seem disinterested?",
+                        "Describe your classroom management approach.",
+                        "How do you adapt your teaching for different learning styles?"
+                    ]
+                };
+                
+                return questions[role] || questions['sales'];
+            }
+
+            stopPracticeSession() {
+                if (this.currentSession) {
+                    this.stopSessionTimer();
+                    
+                    const duration = Math.floor((Date.now() - this.currentSession.startTime) / 1000);
+                    
+                    this.updateStatus('Practice session completed', 'complete');
+                    this.showResults(duration);
+                    this.toggleControls(false);
+                    
+                    this.currentSession = null;
+                }
+            }
+
+            startSessionTimer() {
+                this.startTime = Date.now();
+                const timerElement = document.getElementById('session-timer');
+                timerElement.style.display = 'block';
+                
+                this.sessionTimer = setInterval(() => {
+                    const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+                    const minutes = Math.floor(elapsed / 60);
+                    const seconds = elapsed % 60;
+                    
+                    timerElement.textContent = 
+                        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+
+            stopSessionTimer() {
+                if (this.sessionTimer) {
+                    clearInterval(this.sessionTimer);
+                    this.sessionTimer = null;
+                }
+                document.getElementById('session-timer').style.display = 'none';
+            }
+
+            showResults(duration) {
+                const resultsDiv = document.getElementById('session-results');
+                const contentDiv = document.getElementById('results-content');
+                
+                const minutes = Math.floor(duration / 60);
+                const seconds = duration % 60;
+                
+                contentDiv.innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div style="text-align: center;">
+                            <h4>⏱️ Duration</h4>
+                            <p>${minutes}m ${seconds}s</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <h4>🎯 Role</h4>
+                            <p>${this.getRoleName(this.selectedRole)}</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <h4>📈 Status</h4>
+                            <p style="color: #059669;">Completed</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: var(--background-color); border-radius: 0.5rem;">
+                        <h4>🎉 Great job completing your practice session!</h4>
+                        <p>Practice sessions help you build confidence and improve your communication skills. 
+                        Consider doing another session or try the actual voice challenge when you're ready.</p>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <button onclick="location.reload()" class="practice-btn" style="margin-right: 1rem;">
+                            Practice Again
+                        </button>
+                        <a href="challenge.html" class="practice-btn" style="text-decoration: none; display: inline-block;">
+                            Take Real Challenge
+                        </a>
+                    </div>
+                `;
+                
+                resultsDiv.style.display = 'block';
+            }
+
+            toggleControls(sessionActive) {
+                const startBtn = document.getElementById('start-practice-btn');
+                const stopBtn = document.getElementById('stop-practice-btn');
+                
+                if (sessionActive) {
+                    startBtn.style.display = 'none';
+                    stopBtn.style.display = 'inline-block';
+                    stopBtn.disabled = false;
+                } else {
+                    startBtn.style.display = 'inline-block';
+                    stopBtn.style.display = 'none';
+                    startBtn.disabled = !this.selectedRole;
+                }
+            }
+
+            updateStatus(message, type) {
+                const statusElement = document.getElementById('session-status');
+                statusElement.textContent = message;
+                statusElement.className = `session-status status-${type}`;
+            }
+
+            getRoleName(role) {
+                const names = {
+                    'sales': 'Sales Representative',
+                    'support': 'Customer Support',
+                    'javascript': 'JavaScript Developer',
+                    'python': 'Python Developer',
+                    'java': 'Java Developer',
+                    'cpp': 'C++ Developer',
+                    'tech': 'Tech Support',
+                    'teacher': 'Teacher'
+                };
+                return names[role] || role;
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new InterviewPracticeManager();
+        });
+    </script>
+</body>
+</html> 

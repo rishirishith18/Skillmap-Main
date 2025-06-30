@@ -1,0 +1,13 @@
+{
+  "name": "skillsnap-frontend",
+  "version": "1.0.0",
+  "description": "SkillSnap Voice Challenge Platform - Frontend",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 3000",
+    "dev": "python -m http.server 8080"
+  },
+  "keywords": ["voice", "challenges", "hiring", "ai"],
+  "author": "",
+  "license": "MIT"
+} 

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Challenge - SkillSnap</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="../../assets/css/responsive.css">
+    <link rel="stylesheet" href="../../assets/css/shared.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .voice-challenge-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .challenge-card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .challenge-prompt {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+        }
+        
+        .recording-controls {
+            text-align: center;
+            padding: 2rem;
+            background: var(--accent-bg);
+            border-radius: 0.75rem;
+            margin: 2rem 0;
+            border: 1px solid var(--border-color);
+        }
+        
+        .record-button {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .record-button.idle {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+        }
+        
+        .record-button.idle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(239, 68, 68, 0.5);
+        }
+        
+        .record-button.recording {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.5);
+        }
+        
+        .record-button.stopped {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
+        
+        .record-button.stopped:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(16, 185, 129, 0.5);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 1rem 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .audio-player {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-radius: 0.75rem;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .waveform {
+            height: 60px;
+            background: #f3f4f6;
+            border-radius: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        
+        .status-indicator {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            margin: 0.5rem;
+            display: inline-block;
+            font-size: 1rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .status-ready { 
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); 
+            color: #1e40af; 
+            border-color: #3b82f6;
+        }
+        .status-recording { 
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); 
+            color: #dc2626; 
+            border-color: #ef4444;
+            animation: glow 2s infinite;
+        }
+        .status-stopped { 
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); 
+            color: #059669; 
+            border-color: #10b981;
+        }
+        .status-uploading { 
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); 
+            color: #d97706; 
+            border-color: #f59e0b;
+        }
+        .status-complete { 
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); 
+            color: #059669; 
+            border-color: #10b981;
+        }
+        .status-error { 
+            background: linear-gradient(135deg, #fde2e8 0%, #fbb6ce 100%); 
+            color: #be185d; 
+            border-color: #ec4899;
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.8); }
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+        
+        .challenge-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .info-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--accent-bg);
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease;
+        }
+        
+        .info-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        .info-value {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        /* Dark mode support */
+        [data-theme="dark"] .challenge-card {
+            background: var(--card-bg);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        [data-theme="dark"] .recording-controls {
+            background: var(--accent-bg);
+        }
+        
+        [data-theme="dark"] .info-item {
+            background: var(--accent-bg);
+        }
+        
+        [data-theme="dark"] .status-ready { 
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); 
+            color: #93c5fd; 
+        }
+        [data-theme="dark"] .status-recording { 
+            background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); 
+            color: #fca5a5; 
+        }
+        [data-theme="dark"] .status-stopped { 
+            background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); 
+            color: #6ee7b7; 
+        }
+        [data-theme="dark"] .status-error { 
+            background: linear-gradient(135deg, #831843 0%, #9d174d 100%); 
+            color: #f9a8d4; 
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="../../index.html" class="logo">
+                <i data-lucide="zap"></i>
+                SkillSnap
+            </a>
+            
+            <nav class="nav-links">
+                <a href="../../index.html" class="nav-link">Home</a>
+                <a href="../../pages/candidate/signup.html" class="nav-link">For Candidates</a>
+                <a href="../../pages/recruiter/login.html" class="nav-link">For Recruiters</a>
+            </nav>
+            
+            <div class="auth-buttons" id="auth-buttons">
+                <a href="../../pages/recruiter/login.html" class="btn-header btn-login">Login</a>
+                <a href="../../pages/recruiter/register.html" class="btn-header btn-register">Sign Up</a>
+            </div>
+            
+            <div class="user-profile" id="user-profile" style="display: none;">
+                <span id="user-name"></span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="voice-challenge-container">
+            <!-- Challenge Information -->
+            <div class="challenge-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2 style="color: var(--primary-color); margin: 0; font-weight: 700;">Voice Challenge</h2>
+                    <a href="../../pages/candidate/dashboard.html" class="btn-header btn-login">← Back to Dashboard</a>
+                </div>
+                
+                <div class="challenge-info">
+                    <div class="info-item">
+                        <div class="info-value" id="challenge-role">Loading...</div>
+                        <div class="info-label">Your Role</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-value">5:00</div>
+                        <div class="info-label">Max Duration</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-value">High Quality</div>
+                        <div class="info-label">Recording Quality</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Challenge Prompt -->
+            <div class="challenge-prompt">
+                <h3 style="margin-top: 0;">📝 Your Challenge</h3>
+                <p id="challenge-text" style="font-size: 1.125rem; line-height: 1.6; margin-bottom: 0;">
+                    Loading challenge prompt...
+                </p>
+            </div>
+
+            <!-- Recording Interface -->
+            <div class="challenge-card">
+                <div class="recording-controls">
+                    <div class="status-indicator status-ready" id="status-indicator">
+                        🎤 Ready to Record
+                    </div>
+                    
+                    <div class="timer" id="timer">00:00</div>
+                    
+                    <button class="record-button idle" id="record-button" onclick="toggleRecording()">
+                        <i data-lucide="mic" id="record-icon"></i>
+                    </button>
+                    
+                    <div style="margin-top: 1rem;">
+                        <p style="color: var(--text-secondary); margin: 0; font-weight: 500;">Click the microphone to start recording</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem; opacity: 0.8;">Take your time to think before you start</p>
+                    </div>
+                </div>
+
+                <!-- Audio Playback -->
+                <div class="audio-player" id="audio-player" style="display: none;">
+                    <h4 style="margin-top: 0;">🎵 Your Recording</h4>
+                    <audio controls id="recorded-audio" style="width: 100%;"></audio>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-primary" onclick="reRecord()">
+                            <i data-lucide="rotate-ccw"></i> Re-record
+                        </button>
+                        <button class="btn-primary" onclick="submitRecording()" id="submit-btn">
+                            <i data-lucide="upload"></i> Submit Recording
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Upload Progress -->
+                <div id="upload-progress" style="display: none; text-align: center; padding: 2rem;">
+                    <div class="loading" style="margin: 0 auto 1rem;"></div>
+                    <p>Uploading and analyzing your recording...</p>
+                    <div style="background: var(--accent-bg); border-radius: 0.5rem; height: 8px; margin: 1rem 0; border: 1px solid var(--border-color);">
+                        <div id="progress-bar" style="background: var(--primary-color); height: 100%; border-radius: 0.5rem; width: 0%; transition: width 0.3s;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="challenge-card">
+                <h3 style="color: var(--primary-color); font-weight: 600;">💡 Recording Tips</h3>
+                <ul style="color: var(--text-secondary); line-height: 1.6; font-weight: 500;">
+                    <li>Find a quiet environment with minimal background noise</li>
+                    <li>Speak clearly and at a normal pace</li>
+                    <li>Take your time to think before responding</li>
+                    <li>You can re-record as many times as needed</li>
+                    <li>Your recording will be analyzed for fluency, confidence, relevance, clarity, and tone</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SkillSnap</h3>
+                    <p style="color: #9ca3af; margin-bottom: 1rem;">
+                        Revolutionizing hiring through AI-powered voice challenges. 
+                        Connecting talent with opportunity through authentic communication assessment.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Technical Support</a></li>
+                        <li><a href="#">Recording Issues</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 SkillSnap. All rights reserved. | Powered by AI voice technology</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/shared.js"></script>
+    <!-- OmniDimension Integration -->
+    <script src="https://cdn.omnidim.io/sdk/v1/omnidim.js"></script>
+    <script src="../../assets/js/omnidimension-core.js"></script>
+    <script src="../../assets/js/practice-assistant.js"></script>
+    
+    <script src="../../assets/js/voice-recorder.js"></script>
+    <script>
+        // Initialize voice challenge page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Voice challenge page DOM loaded');
+            
+            // Protect page - only candidates can access
+            if (!protectCandidatePage()) {
+                return;
+            }
+            
+            initializeTheme();
+            checkAuthStatus();
+            
+            // Initialize challenge content
+            initializeVoiceChallenge();
+            
+            // Initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            
+            // Add additional debugging
+            setTimeout(() => {
+                console.log('Voice recorder status:', {
+                    voiceRecorder: !!window.voiceRecorder,
+                    recordButton: !!document.getElementById('record-button'),
+                    statusIndicator: !!document.getElementById('status-indicator')
+                });
+            }, 3000);
+        });
+        
+        async function initializeVoiceChallenge() {
+            console.log('Initializing voice challenge...');
+            
+            const candidateData = localStorage.getItem('candidateData') || localStorage.getItem('candidateAuth');
+            
+            if (!candidateData) {
+                console.error('No candidate data found');
+                window.location.href = '../../pages/candidate/login.html';
+                return;
+            }
+            
+            const candidate = JSON.parse(candidateData);
+            console.log('Candidate data loaded:', candidate);
+            
+            // Set challenge role
+            const roleElement = document.getElementById('challenge-role');
+            if (roleElement) {
+                roleElement.textContent = 
+                    candidate.role_interest ? 
+                    candidate.role_interest.charAt(0).toUpperCase() + candidate.role_interest.slice(1) : 'General';
+            }
+            
+            // Load challenge prompt based on role
+            loadChallengePrompt(candidate.role_interest);
+            
+            // Update header authentication state
+            if (typeof showCandidateAuthenticatedState === 'function') {
+                showCandidateAuthenticatedState(candidate);
+            }
+        }
+        
+        function loadChallengePrompt(roleInterest) {
+            const prompts = {
+                'sales': 'Describe a time when you had to convince a difficult customer to purchase a product or service. Walk me through your approach, the challenges you faced, and how you overcame any objections.',
+                'support': 'Imagine a customer is frustrated because their product isn\'t working as expected. They\'ve been waiting for a solution for hours. How would you handle this situation and what steps would you take to resolve their issue?',
+                'tech': 'A user reports that their application is running slowly and occasionally crashing. Explain how you would troubleshoot this issue step by step, and how you would communicate the solution to a non-technical user.',
+                'teacher': 'Describe your teaching philosophy and explain how you would engage a classroom of students who seem uninterested in the subject matter. Provide specific strategies you would use.',
+                'javascript': 'Explain the concept of closures in JavaScript and provide a real-world scenario where you would use them. Walk me through how you would implement this solution.',
+                'python': 'Describe how you would optimize a Python script that\'s running slowly when processing large datasets. What techniques and libraries would you consider?',
+                'java': 'Explain the difference between abstract classes and interfaces in Java, and describe a scenario where you would choose one over the other.',
+                'cpp': 'Discuss memory management in C++ and explain how you would prevent memory leaks in a large application. What best practices do you follow?'
+            };
+            
+            const defaultPrompt = 'Tell me about a challenging project you worked on recently. Describe the problem you faced, your approach to solving it, and the outcome. What did you learn from this experience?';
+            
+            const prompt = prompts[roleInterest] || defaultPrompt;
+            const promptElement = document.getElementById('challenge-text');
+            if (promptElement) {
+                promptElement.textContent = prompt;
+            }
+        }
+        
+        // Test microphone access function
+        function testMicrophone() {
+            console.log('Testing microphone access...');
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    console.log('Microphone access granted');
+                    stream.getTracks().forEach(track => track.stop());
+                    alert('Microphone test successful!');
+                })
+                .catch(error => {
+                    console.error('Microphone test failed:', error);
+                    alert('Microphone test failed: ' + error.message);
+                });
+        }
+        
+        // Add test button temporarily for debugging
+        window.addEventListener('load', function() {
+            // Add a test button to help debug
+            const testButton = document.createElement('button');
+            testButton.textContent = 'Test Microphone';
+            testButton.onclick = testMicrophone;
+            testButton.style.cssText = 'position: fixed; top: 10px; left: 10px; z-index: 9999; padding: 10px; background: #4f46e5; color: white; border: none; border-radius: 5px; cursor: pointer;';
+            document.body.appendChild(testButton);
+        });
+    </script>
+</body>
+</html> 

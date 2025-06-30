@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSnap API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f8fafc;
+        }
+        .test-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-result {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.25rem;
+            font-family: monospace;
+        }
+        .success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+        .info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #3b82f6;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .loading {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔧 SkillSnap API Connection Test</h1>
+        <p>This page helps diagnose connection issues between the frontend and backend API.</p>
+        
+        <div class="test-result info">
+            <strong>Instructions:</strong><br>
+            1. Make sure the backend server is running: <code>cd backend && python -m uvicorn main:app --reload</code><br>
+            2. Disable ad blockers (uBlock Origin, AdBlock Plus, etc.)<br>
+            3. Try different browsers if the issue persists
+        </div>
+
+        <h3>🧪 Connection Tests</h3>
+        
+        <button onclick="testBasicConnection()">Test Basic Connection</button>
+        <button onclick="testHealthEndpoint()">Test Health Endpoint</button>
+        <button onclick="testCandidatesAPI()">Test Candidates API</button>
+        <button onclick="testAllEndpoints()">Test All Endpoints</button>
+        <button onclick="clearResults()">Clear Results</button>
+
+        <div id="results"></div>
+
+        <h3>📋 Backend Server Commands</h3>
+        <div class="test-result info">
+            <strong>Start Backend Server:</strong><br>
+            <code>cd backend</code><br>
+            <code>python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000</code><br><br>
+            
+            <strong>Alternative Start:</strong><br>
+            <code>cd backend && python main.py</code><br><br>
+            
+            <strong>Check if Running:</strong><br>
+            <code>curl http://localhost:8000/health</code>
+        </div>
+    </div>
+
+    <script>
+        const API_URLS = [
+            'http://127.0.0.1:8000',
+            'http://localhost:8000',
+            'http://0.0.0.0:8000'
+        ];
+
+        function addResult(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = `<strong>${new Date().toLocaleTimeString()}</strong>: ${message}`;
+            results.appendChild(div);
+            results.scrollTop = results.scrollHeight;
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        async function testBasicConnection() {
+            addResult('🔍 Testing basic connection to backend server...', 'info');
+            
+            for (const baseUrl of API_URLS) {
+                try {
+                    const response = await fetch(baseUrl, {
+                        method: 'GET',
+                        mode: 'cors'
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        addResult(`✅ SUCCESS: ${baseUrl} - ${JSON.stringify(data)}`, 'success');
+                        return;
+                    } else {
+                        addResult(`⚠️ ${baseUrl} responded with status: ${response.status}`, 'error');
+                    }
+                } catch (error) {
+                    addResult(`❌ ${baseUrl} failed: ${error.message}`, 'error');
+                }
+            }
+            
+            addResult('🚨 No API endpoints are accessible', 'error');
+        }
+
+        async function testHealthEndpoint() {
+            addResult('🏥 Testing health endpoint...', 'info');
+            
+            for (const baseUrl of API_URLS) {
+                try {
+                    const response = await fetch(`${baseUrl}/health`, {
+                        method: 'GET',
+                        mode: 'cors'
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        addResult(`✅ HEALTH OK: ${baseUrl}/health - Status: ${data.status}`, 'success');
+                        return;
+                    } else {
+                        addResult(`⚠️ Health check failed for ${baseUrl}: ${response.status}`, 'error');
+                    }
+                } catch (error) {
+                    addResult(`❌ Health check error for ${baseUrl}: ${error.message}`, 'error');
+                }
+            }
+        }
+
+        async function testCandidatesAPI() {
+            addResult('👥 Testing candidates API endpoint...', 'info');
+            
+            for (const baseUrl of API_URLS) {
+                try {
+                    const response = await fetch(`${baseUrl}/api/v1/candidates?skip=0&limit=5`, {
+                        method: 'GET',
+                        mode: 'cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        addResult(`✅ CANDIDATES API OK: ${baseUrl}/api/v1/candidates - Found ${data.length} candidates`, 'success');
+                        return;
+                    } else {
+                        addResult(`⚠️ Candidates API failed for ${baseUrl}: ${response.status}`, 'error');
+                    }
+                } catch (error) {
+                    addResult(`❌ Candidates API error for ${baseUrl}: ${error.message}`, 'error');
+                }
+            }
+        }
+
+        async function testAllEndpoints() {
+            addResult('🚀 Running comprehensive API tests...', 'info');
+            await testBasicConnection();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testHealthEndpoint();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testCandidatesAPI();
+            addResult('✅ All tests completed!', 'success');
+        }
+
+        // Auto-run basic test on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            addResult('🔧 API Test Page Loaded', 'info');
+            addResult('Click "Test Basic Connection" to start testing', 'info');
+        });
+    </script>
+</body>
+</html> 

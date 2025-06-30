@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Interview - SkillSnap</title>
+    <link rel="stylesheet" href="../../assets/css/shared.css">
+    <style>
+        .interview-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .interview-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            border-radius: 1rem;
+        }
+
+        .interview-setup {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .setup-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            background: var(--background-color);
+            color: var(--text-primary);
+        }
+
+        .interview-room {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            display: none;
+        }
+
+        .interview-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .control-btn.danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .interview-status {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .status-waiting {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-color);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-complete {
+            background: rgba(139, 69, 19, 0.1);
+            color: #92400e;
+            border: 1px solid rgba(139, 69, 19, 0.3);
+        }
+
+        .interview-timer {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 1rem 0;
+        }
+
+        .interview-insights {
+            background: var(--background-secondary);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .insight-card {
+            background: var(--card-background);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .setup-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .interview-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">
+                <span>🎯 SkillSnap</span>
+            </a>
+            <div class="nav-menu">
+                <a href="../recruiter/dashboard.html" class="nav-link">Dashboard</a>
+                <a href="challenge.html" class="nav-link">Voice Challenge</a>
+                <a href="live-interview.html" class="nav-link active">Live Interview</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="interview-container">
+        <div class="interview-header">
+            <h1>🎙️ Live Voice Interview</h1>
+            <p>Conduct real-time AI-powered interviews with candidates. Get instant insights and analysis.</p>
+        </div>
+
+        <div id="interview-setup" class="interview-setup">
+            <h3>Interview Setup</h3>
+            <div class="setup-grid">
+                <div>
+                    <div class="form-group">
+                        <label class="form-label">Candidate ID</label>
+                        <input type="text" id="candidate-id" class="form-input" placeholder="Enter candidate ID">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Role Type</label>
+                        <select id="role-type" class="form-select">
+                            <option value="">Select role</option>
+                            <option value="sales">Sales Representative</option>
+                            <option value="support">Customer Support</option>
+                            <option value="javascript">JavaScript Developer</option>
+                            <option value="python">Python Developer</option>
+                            <option value="java">Java Developer</option>
+                            <option value="cpp">C++ Developer</option>
+                            <option value="tech">Tech Support</option>
+                            <option value="teacher">Teacher</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="form-group">
+                        <label class="form-label">Interview Duration (minutes)</label>
+                        <select id="interview-duration" class="form-select">
+                            <option value="10">10 minutes</option>
+                            <option value="15" selected>15 minutes</option>
+                            <option value="20">20 minutes</option>
+                            <option value="30">30 minutes</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Job Description (Optional)</label>
+                        <textarea id="job-description" class="form-input" rows="3" 
+                                placeholder="Brief job description for context..."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="interview-controls">
+                <button id="start-interview-btn" class="control-btn">
+                    Start Live Interview
+                </button>
+            </div>
+        </div>
+
+        <div id="interview-room" class="interview-room">
+            <h3>Interview in Progress</h3>
+            
+            <div id="interview-status" class="interview-status status-waiting">
+                Preparing interview session...
+            </div>
+            
+            <div id="interview-timer" class="interview-timer">00:00</div>
+            
+            <div class="interview-controls">
+                <button id="end-interview-btn" class="control-btn danger">
+                    End Interview
+                </button>
+            </div>
+            
+            <div id="interview-insights" class="interview-insights">
+                <h4>📊 Real-time Insights</h4>
+                <div id="insights-content" class="insights-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OmniDimension Integration -->
+    <script src="https://cdn.omnidim.io/sdk/v1/omnidim.js"></script>
+    <script src="../../assets/js/omnidimension-core.js"></script>
+    <script src="../../assets/js/live-interview.js"></script>
+    
+    <script>
+        class LiveInterviewManager {
+            constructor() {
+                this.liveAssistant = null;
+                this.currentInterview = null;
+                this.timer = null;
+                this.startTime = null;
+                this.init();
+            }
+
+            init() {
+                this.setupControls();
+                this.waitForOmniDim();
+            }
+
+            waitForOmniDim() {
+                const checkOmniDim = () => {
+                    if (window.skillSnapOmni && window.skillSnapOmni.isReady()) {
+                        this.liveAssistant = new LiveInterviewAssistant();
+                        console.log('✅ Live Interview Assistant ready');
+                    } else {
+                        setTimeout(checkOmniDim, 1000);
+                    }
+                };
+                checkOmniDim();
+            }
+
+            setupControls() {
+                document.getElementById('start-interview-btn').addEventListener('click', () => {
+                    this.startInterview();
+                });
+
+                document.getElementById('end-interview-btn').addEventListener('click', () => {
+                    this.endInterview();
+                });
+            }
+
+            async startInterview() {
+                const candidateId = document.getElementById('candidate-id').value;
+                const roleType = document.getElementById('role-type').value;
+                const duration = parseInt(document.getElementById('interview-duration').value);
+                const jobDescription = document.getElementById('job-description').value;
+
+                if (!candidateId || !roleType) {
+                    alert('Please fill in candidate ID and role type');
+                    return;
+                }
+
+                try {
+                    this.updateStatus('Starting interview session...', 'waiting');
+                    
+                    if (this.liveAssistant) {
+                        this.currentInterview = await this.liveAssistant.startLiveInterview(
+                            candidateId, roleType, duration, jobDescription
+                        );
+                    } else {
+                        // Fallback mode
+                        this.currentInterview = {
+                            callId: `fallback-${Date.now()}`,
+                            candidateId: candidateId,
+                            role: roleType,
+                            duration: duration,
+                            status: 'active'
+                        };
+                    }
+
+                    if (this.currentInterview) {
+                        this.showInterviewRoom();
+                        this.updateStatus('Live interview in progress', 'active');
+                        this.startTimer();
+                        this.showInsights();
+                    }
+
+                } catch (error) {
+                    console.error('❌ Failed to start interview:', error);
+                    this.updateStatus('Failed to start interview. Please try again.', 'waiting');
+                }
+            }
+
+            async endInterview() {
+                if (!this.currentInterview) return;
+
+                try {
+                    this.updateStatus('Ending interview and generating results...', 'waiting');
+                    
+                    let results = null;
+                    if (this.liveAssistant) {
+                        results = await this.liveAssistant.endInterview();
+                    }
+
+                    this.stopTimer();
+                    this.updateStatus('Interview completed', 'complete');
+                    this.showResults(results);
+                    
+                    this.currentInterview = null;
+
+                } catch (error) {
+                    console.error('❌ Failed to end interview:', error);
+                    this.updateStatus('Error ending interview', 'waiting');
+                }
+            }
+
+            showInterviewRoom() {
+                document.getElementById('interview-setup').style.display = 'none';
+                document.getElementById('interview-room').style.display = 'block';
+            }
+
+            hideInterviewRoom() {
+                document.getElementById('interview-setup').style.display = 'block';
+                document.getElementById('interview-room').style.display = 'none';
+            }
+
+            startTimer() {
+                this.startTime = Date.now();
+                const timerElement = document.getElementById('interview-timer');
+                
+                this.timer = setInterval(() => {
+                    const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+                    const minutes = Math.floor(elapsed / 60);
+                    const seconds = elapsed % 60;
+                    
+                    timerElement.textContent = 
+                        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+
+            stopTimer() {
+                if (this.timer) {
+                    clearInterval(this.timer);
+                    this.timer = null;
+                }
+            }
+
+            updateStatus(message, type) {
+                const statusElement = document.getElementById('interview-status');
+                statusElement.textContent = message;
+                statusElement.className = `interview-status status-${type}`;
+            }
+
+            showInsights() {
+                const insightsDiv = document.getElementById('interview-insights');
+                const contentDiv = document.getElementById('insights-content');
+                
+                // Show sample insights during interview
+                contentDiv.innerHTML = `
+                    <div class="insight-card">
+                        <h4>🎯 Communication</h4>
+                        <p>Monitoring speech clarity and pace...</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>💭 Engagement</h4>
+                        <p>Tracking response quality and depth...</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>🔄 Flow</h4>
+                        <p>Analyzing conversation flow...</p>
+                    </div>
+                `;
+                
+                insightsDiv.style.display = 'block';
+            }
+
+            showResults(results) {
+                const contentDiv = document.getElementById('insights-content');
+                
+                if (results) {
+                    contentDiv.innerHTML = `
+                        <div class="insight-card">
+                            <h4>📊 Overall Score</h4>
+                            <p>${results.scores.overall || 'Processing...'}</p>
+                        </div>
+                        <div class="insight-card">
+                            <h4>🗣️ Communication</h4>
+                            <p>${results.scores.communication || 'Processing...'}</p>
+                        </div>
+                        <div class="insight-card">
+                            <h4>⚡ Engagement</h4>
+                            <p>${results.scores.engagement || 'Processing...'}</p>
+                        </div>
+                        <div class="insight-card">
+                            <h4>📝 Recommendation</h4>
+                            <p>${results.recommendation}</p>
+                        </div>
+                    `;
+                } else {
+                    contentDiv.innerHTML = `
+                        <div class="insight-card">
+                            <h4>✅ Interview Complete</h4>
+                            <p>Interview session ended successfully. Results will be processed and available in the dashboard.</p>
+                        </div>
+                    `;
+                }
+
+                // Add action buttons
+                contentDiv.innerHTML += `
+                    <div style="grid-column: 1 / -1; text-align: center; margin-top: 1rem;">
+                        <button onclick="location.reload()" class="control-btn" style="margin-right: 1rem;">
+                            Start New Interview
+                        </button>
+                        <a href="../recruiter/dashboard.html" class="control-btn" style="text-decoration: none; display: inline-block;">
+                            View Dashboard
+                        </a>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new LiveInterviewManager();
+        });
+    </script>
+</body>
+</html> 
